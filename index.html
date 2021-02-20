@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EGCode</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<style type="text/css" media="all">
+	body{
+		font-family: ui-rounded;
+		background-color: black; /**/
+		color: white;
+	}
+	.nav{
+		background-color: #39a;
+		height: 50px;
+		position: fixed;
+		width: 100vw;
+		left: 0;
+		top: 0;
+		opacity: 0.9;
+		border-radius: 10px;
+	}
+	.menu{
+		position: fixed;
+		background-color: #222;
+		left: 0;
+		top: 50px;
+		width: 100vw;
+		padding: 10px;
+		display: none;
+	}
+	#comp{
+		background-color: black;
+		width: 99vw;
+		color: white;
+		font-family: monospace;
+		margin-left: -15px;
+	}
+</style>
+<body>
+	&nbsp;
+<div class="nav">
+	<t style="text-align:center;width:100vw;font-size:35px">EGCode</t>
+	<t onclick="$('.menu').toggle()"style="float:right;font-size:40px;padding-right:10px;color:#178;">V</t>
+</div>
+<div class="menu">Compiler</div>
+<h2>Who needs data types</h2>Well everyone does but I don't care.
+<h1>Compiler:</h1>
+<textarea name="comp" id=comp rows="10">print(Hello world!)</textarea>
+</body>
+
+</html>
