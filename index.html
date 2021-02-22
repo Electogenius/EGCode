@@ -2,19 +2,23 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EGCode</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>EGCode</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="compiler.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <style type="text/css" media="all">
-	body{
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+	body {
 		font-family: ui-rounded;
-		background-color: black; /**/
+		background-color: black;
+		/*just like everything I make*/
 		color: white;
 	}
-	.nav{
-		background-color: #39a;
+
+	.nav {
+		background-color: #28b;
 		height: 50px;
 		position: fixed;
 		width: 100vw;
@@ -23,7 +27,8 @@
 		opacity: 0.9;
 		border-radius: 10px;
 	}
-	.menu{
+
+	.menu {
 		position: fixed;
 		background-color: #222;
 		left: 0;
@@ -32,24 +37,31 @@
 		padding: 10px;
 		display: none;
 	}
-	#comp{
+
+	#comp {
 		background-color: black;
 		width: 99vw;
 		color: white;
-		font-family: monospace;
+		font-family: "Space Mono", monospace;
 		margin-left: -15px;
 	}
 </style>
+
 <body>
 	&nbsp;
-<div class="nav">
-	<t style="text-align:center;width:100vw;font-size:35px">EGCode</t>
-	<t onclick="$('.menu').toggle()"style="float:right;font-size:40px;padding-right:10px;color:#178;">V</t>
-</div>
-<div class="menu">Compiler</div>
-<h2>Who needs data types</h2>Well everyone does but I don't care.
-<h1>Compiler:</h1>
-<textarea name="comp" id=comp rows="10">print(Hello world!)</textarea>
+	<div class="nav">
+		<t style="text-align:center;width:100vw;font-size:35px">
+			<img src="/logo.JPG" alt="logo" width="40px" height="40px" style="margin-left:5px;margin-top:5px" />
+			<t style="padding-top: -10px">
+				EGCode
+			</t>
+		</t>
+		<t onclick="$('.menu').toggle()" style="float:right;font-size:40px;padding-right:10px;color:#179;">V</t>
+	</div>
+	<div class="menu">coming soon</div>
+	<h2>Because who needs data types</h2>Everyone does but I don't care.
+	<h1>Compiler</h1>
+	<textarea name="comp" id=comp rows="10">print(Hello world!)</textarea>
 </body>
 
 </html>
