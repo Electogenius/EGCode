@@ -9,10 +9,10 @@
 	<script src="compiler.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <style type="text/css" media="all">
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
 	body {
-		font-family: ui-rounded;
-		background-color: black;
+		font-family: system-ui;
+		background-color: #222;
 		/*just like everything I make*/
 		color: white;
 	}
@@ -38,12 +38,25 @@
 		display: none;
 	}
 
-	#comp {
+	.comp {
 		background-color: black;
-		width: 99vw;
 		color: white;
-		font-family: "Space Mono", monospace;
-		margin-left: -15px;
+		font-family: Inconsolata, monospace;
+		border: 1px solid white;
+		border-radius: 7px;
+		width: 95%;
+		position: relative;
+		margin: auto;
+		left: 0;
+		display: block;
+		font-size: 15px
+	}
+	#run{
+		border-radius: 10px;
+		background-color: greenyellow;
+		font-size: 25px;
+		padding: 10px;
+		margin-left: 20px
 	}
 </style>
 
@@ -59,9 +72,27 @@
 		<t onclick="$('.menu').toggle()" style="float:right;font-size:40px;padding-right:10px;color:#179;">V</t>
 	</div>
 	<div class="menu">coming soon</div>
-	<h2>Because who needs data types</h2>Everyone does but I don't care.
+	<h1>A programming language without data types</h1>Everyone needs data types but I don't care.
 	<h1>Compiler</h1>
-	<textarea name="comp" id=comp rows="10">print(Hello world!)</textarea>
+	<textarea class="comp" id=comp rows="15">print(Hello world!)</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
+	try{
+	compileEGCodeToJS($('#comp').val())
+	}catch(err){aa(err)}">► Run</button>
+	<pre id="output" class="comp">&nbsp;</pre>
 </body>
-
+<script type="text/javascript" charset="utf-8">
+	console.log = function(text){
+		var node = document.createElement('p')
+		var texN = document.createTextNode(text)
+		node.appendChild(texN)
+		document.getElementById("output").appendChild(node)
+	}
+	function aa(a,b,c,d){
+		var node = document.createElement('p')
+		node.style.backgroundColor = "red"
+		var texN = document.createTextNode(a+b+c+d)
+		node.appendChild(texN)
+		document.getElementById("output").appendChild(node)
+	}
+</script>
 </html>

@@ -1,25 +1,42 @@
 var sample =
-	`print([2 + 2])
+`print([2 + 2])
+print(10)
 var x(1)
 Print([||x|| - 2])`
 
-eval(compileEGCodeToJS(sample))
+compileEGCodeToJS(sample)
 
 function compileEGCodeToJS(code) {
 	//UVar -> js
-	function EGC_UVarToJS(uvar) {
-	
+	function UVarToJS(uvar) {
+		var x = uvar
+		var isNumber = false
+		if (x[x.length-1!==")"]) {
+			throw("Incorrect end of UVar")
+		}else{
+			console.log(x[x.length-1])
+		}
+		x = x.slice(0, x.length-1)
+		//check type:
+		if (!Number.isNaN(Number(x))) { //number
+			x = Number(x)
+			isNumber = true
+		}else if(x[0]=="[" && x[x.length-1]=="]"){ //math
+			
+		}
+		if (!isNumber) {
+			x = x.replace(/<>/g, "")
+			x = "'" + x + "'"
+		}
+		return x
 	}
 	function iSE(a, b) { //case insensitive ===
-		return a?.toLowerCase() === a?.toLowerCase()
+		return a?.toLowerCase() === b?.toLowerCase()
 	}
-	function removeLastLetter(txt) {
-		return txt?.split(0, txt?.length - 1)
-	}
+	//setup thingies
 	var output = "";
 	var usemes = {};
-	code = code.replace(/\t/, "")
-	code = code.trim()
+	code = code?.replace(/\t/g, "")
 	//splitting into commands
 	code = code.split(/\f?\n/);
 	//egc -> parse:
@@ -44,7 +61,7 @@ function compileEGCodeToJS(code) {
 		kwArr.push("")
 	}
 	//parse -> better parse
-	var arrr = [[]] //array of arrays of keywords in commands
+	var arrr = [[]] //list of arrays of keywords in commands
 	for (var kwdInd in kwArr) {
 		var kw = kwArr[kwdInd];
 		if (kw !== "") {
@@ -56,9 +73,36 @@ function compileEGCodeToJS(code) {
 		}
 	}
 	//better parse -> js:
+	for (var ci = 0; ci < arrr.length; ci++) {
+		var commandArr = arrr[ci]
+		usemes.cmdName = commandArr[0]
+		for (var kwdInd in commandArr) {
+			var kwd = commandArr[kwdInd]
+			//print
+			if (iSE(usemes.cmdName, "print")) {
+				if (kwdInd == 0) {
+					output += "console.log("
+				}else if (kwdInd == 1){
+					output += UVarToJS(kwd) + ")"
+				} else{}
+			}
+			//var
+			if (usemes.cmdName == "var") {
+				if (kwdInd==0) {
+					output+="var "
+				}else if (kwdInd==1) {
+					output+=kwd
+				}else if (kwdInd==2) {
+					output+= " = " + kwd.slice(0, kwd.length-1)
+				}
+			}
+		}
+		output += "\n"
+	}
 	//output js:
+	/*
 	console.log(kwArr)
 	console.log(arrr)
-	console.log(output)
+	console.log(output) */
 	return output
 }
