@@ -1,11 +1,8 @@
 var sample =
-`print([2 + 2])
+`print(2 + 2)
 print(10)
 var x(1)
 Print([||x|| - 2])`
-
-compileEGCodeToJS(sample)
-
 function compileEGCodeToJS(code) {
 	//UVar -> js
 	function UVarToJS(uvar) {
@@ -14,7 +11,6 @@ function compileEGCodeToJS(code) {
 		if (x[x.length-1!==")"]) {
 			throw("Incorrect end of UVar")
 		}else{
-			console.log(x[x.length-1])
 		}
 		x = x.slice(0, x.length-1)
 		//check type:
@@ -22,6 +18,8 @@ function compileEGCodeToJS(code) {
 			x = Number(x)
 			isNumber = true
 		}else if(x[0]=="[" && x[x.length-1]=="]"){ //math
+			var math = x.split(/ /)
+		}else{ //string
 			
 		}
 		if (!isNumber) {

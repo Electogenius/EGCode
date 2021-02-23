@@ -5,18 +5,19 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>EGCode</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="compiler.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <style type="text/css" media="all">
 	@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 	body {
-		font-family: system-ui;
+		font-family: "Open Sans";
 		background-color: #222;
 		/*just like everything I make*/
 		color: white;
 	}
-
 	.nav {
 		background-color: #28b;
 		height: 50px;
@@ -24,13 +25,13 @@
 		width: 100vw;
 		left: 0;
 		top: 0;
-		opacity: 0.9;
+		opacity: 0;
 		border-radius: 10px;
 	}
 
 	.menu {
 		position: fixed;
-		background-color: #222;
+		background-color: #000;
 		left: 0;
 		top: 50px;
 		width: 100vw;
@@ -58,8 +59,34 @@
 		padding: 10px;
 		margin-left: 20px
 	}
+	#output{
+		padding: 10px;
+	}
+	line{
+		display: block
+	}
+	.a{
+		opacity: 0;
+	}
 </style>
-
+<script type="text/javascript" charset="utf-8">
+$(function(){
+	anime({
+		targets: ".nav",
+		opacity: 0.9,
+		duration: 1000,
+		easing: "easeInOutExpo"
+	})
+	anime({
+		targets: ".a",
+		opacity: 1,
+		duration: 5000,
+		easing: "easeOutExpo",
+		delay: anime.stagger(200)
+	})
+})
+  console.log(document.getElementById('output'))
+</script>
 <body>
 	&nbsp;
 	<div class="nav">
@@ -72,23 +99,24 @@
 		<t onclick="$('.menu').toggle()" style="float:right;font-size:40px;padding-right:10px;color:#179;">V</t>
 	</div>
 	<div class="menu">coming soon</div>
-	<h1>A programming language without data types</h1>Everyone needs data types but I don't care.
-	<h1>Compiler</h1>
-	<textarea class="comp" id=comp rows="15">print(Hello world!)</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
+	<h1 class="a">A programming language without data types</h1><t class="a">Everyone needs data types but I don't care.</t>
+	<h1 class="a">Compiler</h1>
+	<textarea class="comp a" id='comp' rows="15">print(Hello world!)</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
 	try{
-	compileEGCodeToJS($('#comp').val())
-	}catch(err){aa(err)}">► Run</button>
-	<pre id="output" class="comp">&nbsp;</pre>
+	eval(compileEGCodeToJS($('#comp').val()))
+	}catch(err){aa(err)}"class="a">► Run</button>
+	<pre id="output" class="comp a"></pre>
+	<script src="AAAAAA.js" type="text/javascript" charset="utf-8"></script>
 </body>
 <script type="text/javascript" charset="utf-8">
 	console.log = function(text){
-		var node = document.createElement('p')
+		var node = document.createElement('line')
 		var texN = document.createTextNode(text)
 		node.appendChild(texN)
 		document.getElementById("output").appendChild(node)
 	}
 	function aa(a,b,c,d){
-		var node = document.createElement('p')
+		var node = document.createElement('line')
 		node.style.backgroundColor = "red"
 		var texN = document.createTextNode(a+b+c+d)
 		node.appendChild(texN)
