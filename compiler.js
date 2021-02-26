@@ -1,8 +1,8 @@
 var sample =
-`print(2 + 2)
-print(10)
+`log(2 + 2)
+log(10)
 var x(1)
-Print([||x|| - 2])`
+Log([||x|| - 2]]`
 function compileEGCodeToJS(code) {
 	//UVar -> js
 	function UVarToJS(uvar) {
@@ -11,6 +11,7 @@ function compileEGCodeToJS(code) {
 		if (x[x.length-1!==")"]) {
 			throw("Incorrect end of UVar")
 		}else{
+			console.log(x[x.length-1==")"])
 		}
 		x = x.slice(0, x.length-1)
 		//check type:
@@ -77,7 +78,7 @@ function compileEGCodeToJS(code) {
 		for (var kwdInd in commandArr) {
 			var kwd = commandArr[kwdInd]
 			//print
-			if (iSE(usemes.cmdName, "print")) {
+			if (iSE(usemes.cmdName, "log")) {
 				if (kwdInd == 0) {
 					output += "console.log("
 				}else if (kwdInd == 1){

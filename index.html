@@ -80,9 +80,9 @@ $(function(){
 	anime({
 		targets: ".a",
 		opacity: 1,
-		duration: 5000,
+		duration: 100,
 		easing: "easeOutExpo",
-		delay: anime.stagger(200)
+		delay: anime.stagger(10)
 	})
 })
   console.log(document.getElementById('output'))
@@ -101,7 +101,7 @@ $(function(){
 	<div class="menu">coming soon</div>
 	<h1 class="a">A programming language without data types</h1><t class="a">Everyone needs data types but I don't care.</t>
 	<h1 class="a">Compiler</h1>
-	<textarea class="comp a" id='comp' rows="15">print(Hello world!)</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
+	<textarea class="comp a" id='comp' rows="15">log(Hello world!)</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
 	try{
 	eval(compileEGCodeToJS($('#comp').val()))
 	}catch(err){aa(err)}"class="a">► Run</button>
@@ -122,5 +122,7 @@ $(function(){
 		node.appendChild(texN)
 		document.getElementById("output").appendChild(node)
 	}
+	
+	console.log(compileEGCodeToJS(sample))
 </script>
 </html>
