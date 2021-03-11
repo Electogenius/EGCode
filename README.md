@@ -13,4 +13,4 @@ Because who needs "" and '', am I right
 print(hello world)
 var x(10)
 print([|x| + 15])
-// gives 25 ^
+ gives 25 ^

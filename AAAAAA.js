@@ -1,2 +1,1 @@
-
-console.log(document.getElementById("com"))
+//console.log(document.getElementById("com"))
