@@ -2,13 +2,14 @@ var sample =
 	`Log([1 + 2 - 2 * 2 / 2])
 log([hello world + world])
 log([uppercase: hi])
+log([1\\ +\\ 1\\ is \\ + 1 + 1])
 var fun dO n{
 	log(you have entered |n|)
 }`
 var EGCode = {
 	compileToJS: function(code) {
 		if (typeof(code) !== "string") {
-			throw ("Input must be of type string. Invalid code " + code + ". ")
+			throw ("JavaScript input must be of type string. Invalid code ", code)
 		}
 		//UVar -> js
 		EGCode.UVarToJS = function(uvar) {
@@ -31,14 +32,26 @@ var EGCode = {
 						x += " " + mkw + " "
 						mfun = mkw
 					} else if (mkw[mkw.length - 1] == ":") { //math function
-
+						x += "EGCode.mfuns." + EGCode.varMatch(mkw) + "("
+						usemes.isInFunction = true
 					} else { //string
-						if (mfun !== "") {
+						if (mfun !== "" || i == 0) {
 							x += (EGCode.UVarToJS(mkw + ")"))
 							mfun = ""
-						}else{
-							console.log(EGCode.UVarToJS);
-							//x = x.slice(0, x.length-1) + " " + EGCode.UVarToJS(mkw+")").slice(1, EGCode.UVarToJS(mkw+")").length)
+						} else { //support for spaces in strings inside math
+							if (i !== 0) {
+								if (usemes.isInFunction) {
+									x += EGCode.UVarToJS(mkw+")")+")"
+									usemes.isInFunction=false
+								}else{
+									var a = (EGCode.UVarToJS(mkw + ")"))
+									if (typeof(a) == "string") { //strings
+										x = x.slice(0, x.length - 1) + " " + EGCode.UVarToJS(mkw + ")").slice(1, EGCode.UVarToJS(mkw + ")").length)
+									} else {
+										x = x.slice(0, x.length - 1) + " " + EGCode.UVarToJS(mkw + ")") + "'"
+									}
+								}
+							}
 						}
 					}
 				}
@@ -46,7 +59,7 @@ var EGCode = {
 
 			}
 			if (!isNumber) {
-				x = x.replace(/<>/g, "")
+				x = x.replace(/\\/g, "");
 				x = "'" + x + "'"
 			}
 			return x
@@ -57,7 +70,7 @@ var EGCode = {
 		}
 		//setup thingies
 		var output = "";
-		var usemes = {};
+		var usemes = {isInFunction: false};
 		code = code?.replace(/\t/g, "")
 		//splitting into commands
 		code = code.split(/\f?\n/);
@@ -138,10 +151,13 @@ var EGCode = {
 		console.log(output) */
 		return output
 	},
-	variables: {},
 	clearData: 0,
 	varMatch: function(test) {
 		var x = test.match(/[A-z,_]/gi)
 		return x.join("")
+	},
+	mfuns: {
+		uppercase: String.prototype.toUpperCase(),
+		lowercase: String.prototype.toLowerCase(),
 	}
 }
