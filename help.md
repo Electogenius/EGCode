@@ -2,12 +2,42 @@
 ok
 
 most functions are case insensitive.
-## print
+## print/log to console/show output
 
-`print(text)`
-
+`log(text)`
 text can be anything you want, '' and "" are not required.
 ## variable declaration
 `var variablename(value)`
+variable name must be letters, underscores and hyphens
 
-variable name must be letters
+## math
+
+math stuff is marked by box brackets, `[]` anything in between it will be treated, *differently*.
+
+```
+[1]
+gives 1
+[1 + 1]
+gives 2 (SPACES ARE NECESSARY BEFORE AND AFTER FUNCTIONS)
+[hello + world]
+gives "helloworld"
+
+[hello world + !]
+gives "hello world!"
+
+[hello \ + world]
+gives "hello world"
+the backslash helps to add a space here
+NOTE: if you're using this in a js string, you need 2 backslashes because only then it won't be confused with an escape character.
+
+[what is 1 + 1]
+gives "what is 11"
+seems unusual at first but actually makes sense
+
+[what is 1 \+ 1]
+[what is \1 \+ \1]
+both give "what is 1 + 1"
+```
+## declaring/making a function
+functions are declared using var.
+Note: functions are not fully implemented

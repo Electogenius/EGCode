@@ -1,4 +1,4 @@
-# EGCode (can also be pronounced "egch")
+# EGCode/EGC (can also be pronounced "egg-sea")
 A programming language that is dangerously loosely typed.
 
 EGCode compiles to JavaScript.
@@ -7,10 +7,10 @@ No data types (kind of)
 
 Because who needs "" and '', am I right
 
-**version: alpha 0.1**
+**version: alpha 2.1**
 
 ```EGCode
 print(hello world)
 var x(10)
 print([|x| + 15])
- gives 25 ^
+ ^ supposed to log 25 (doesn't work yet but coming soon)
