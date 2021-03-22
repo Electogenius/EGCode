@@ -65,6 +65,7 @@
 	}
 	#output{
 		padding: 10px;
+		overflow: scroll
 	}
 	line{
 		display: block
@@ -108,8 +109,8 @@ window.onload=(function(){
 		<t onclick="$('.menu').toggle()" style="float:right;font-size:40px;padding-right:10px;color:#179;">V</t>
 	</div>
 	<div class="menu">coming soon</div>
-	<h1 class="a">A programming language without data types</h1><t class="a">Everyone needs data types but I don't care.</t>
-	<h1 class="a">Compiler</h1>
+	<h1 class="a">An experimental programming language</h1><t class="a">Is </t>
+	<h1 class="a">Try it</h1>
 	<textarea class="comp a" id='comp' rows="15">log(Hello world!)</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
 	try{
 	eval(EGCode.compileToJS(editt.getValue()))
