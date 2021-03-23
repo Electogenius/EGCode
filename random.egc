@@ -1,2 +1,1 @@
-var x(<input(enter your name)>)
-print(Hello, |x|!)
+print(Hello, \ + ask: what_is_your_name?)
