@@ -17,9 +17,9 @@
 	@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 	body {
-		font-family: "Open Sans";
+		font-family: "Open Sans", sans-serif;
 		background-color: #222;
-		/*just like everything I make*/
+		/*just like everything else I made*/
 		color: white;
 	}
 	.nav {
@@ -70,13 +70,14 @@
 	line{
 		display: block
 	}
-	.a{
+	/*.a{
 		opacity: 0;
-	}
+	}*/
 </style>
 <script type="text/javascript" charset="utf-8">
 var editt
 window.onload=(function(){
+	document.querySelectorAll("*").forEach((e)=>{e.style.opacity=0})
 	var TextaArea = document.getElementById("comp")
 	var edit = CodeMirror(function(elt) {
 	TextaArea.parentNode.replaceChild(elt, TextaArea);
@@ -89,11 +90,10 @@ window.onload=(function(){
 		easing: "easeInOutExpo"
 	})
 	anime({
-		targets: ".a",
+		targets: "*",
 		opacity: 1,
-		duration: 100,
-		easing: "easeOutExpo",
-		delay: anime.stagger(10)
+		duration: anime.stagger(20),
+		easing: "easeOutSine"
 	})
 })
 </script>
@@ -101,14 +101,14 @@ window.onload=(function(){
 	&nbsp;
 	<div class="nav">
 		<t style="text-align:center;width:100vw;font-size:35px">
-			<img src="/logo.JPG" alt="logo" width="40px" height="40px" style="margin-left:5px;margin-top:5px" />
+			<img src="https://electogenius.github.io/EGCode/logo.JPG" alt="logo" width="40px" height="40px" style="margin-left:5px;margin-top:5px" />
 			<t style="padding-top: -10px">
 				EGCode
 			</t>
 		</t>
 		<t onclick="$('.menu').toggle()" style="float:right;font-size:40px;padding-right:10px;color:#179;">V</t>
 	</div>
-	<div class="menu">coming soon</div>
+	<div class="menu"><a href="help.md">Help guide</a></div>
 	<h1 class="a">An experimental programming language</h1><t class="a">Do you <i>really</i> need to add a string identifier? <br />I think not.</t>
 	<h1 class="a">Try it</h1>
 	<textarea class="comp a" id='comp' rows="15">log()</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
