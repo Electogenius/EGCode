@@ -157,7 +157,9 @@ var EGCode = {
 		return x.join("")
 	},
 	mfuns: {
-		uppercase: String.prototype.toUpperCase(),
-		lowercase: String.prototype.toLowerCase(),
+		uppercase:(x)=>x.toUpperCase(),
+		lowercase:(x)=>x.toLowerCase(),
+		stringize:(x)=>String(x).split("").join("\\"),
+		lengthof: (x)=>String(x).length
 	}
 }

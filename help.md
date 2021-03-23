@@ -5,9 +5,11 @@ most functions are case insensitive.
 ## print/log to console/show output
 
 `log(text)`
+
 text can be anything you want, '' and "" are not required.
 ## variable declaration
 `var variablename(value)`
+
 variable name must be letters, underscores and hyphens
 
 ## math
@@ -17,8 +19,13 @@ math stuff is marked by box brackets, `[]` anything in between it will be treate
 ```
 [1]
 gives 1
+
+[hello world]
+gives "hello world"
+
 [1 + 1]
 gives 2 (SPACES ARE NECESSARY BEFORE AND AFTER FUNCTIONS)
+
 [hello + world]
 gives "helloworld"
 
@@ -41,3 +48,12 @@ both give "what is 1 + 1"
 ## declaring/making a function
 functions are declared using var.
 Note: functions are not fully implemented
+```
+var introduce do n{
+	log(Hello World!)
+}
+here "n" is the parameter, functions can only have 1 input which can be an array if necessary
+```
+and speaking of arrays if necessary,
+## arrays
+arrays are just 
