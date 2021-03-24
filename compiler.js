@@ -1,11 +1,12 @@
 var sample =
-	`Log([1 + 2 - 2 * 2 / 2])
+	`Log([1 + ( 2 - 2 ) * 2 / 2])
 log([hello world + world])
 log([uppercase: hi])
 log([1\\ +\\ 1\\ is \\ + 1 + 1])
 var fun dO n{
 	log(you have entered |n|)
-}`
+}`//idk
+
 var EGCode = {
 	compileToJS: function(code) {
 		if (typeof(code) !== "string") {
@@ -28,9 +29,13 @@ var EGCode = {
 				x = ""
 				for (var i = 0; i < math.length; i++) {
 					var mkw = math[i]
-					if (mkw.length == 1 && mkw.match(/[+\-*/]/) && mfun == "") { //math operator
+					if (mkw.length == 1 && mkw.match(/[\(+\-*/\)]/) && mfun == "") { //math operator
 						x += " " + mkw + " "
-						mfun = mkw
+						if (mkw == "(" || mkw == ")") {
+							x+="d"
+						}else{
+							mfun=mkw
+						}
 					} else if (mkw[mkw.length - 1] == ":") { //math function
 						x += "EGCode.mfuns." + EGCode.varMatch(mkw) + "("
 						usemes.isInFunction = true
@@ -159,7 +164,8 @@ var EGCode = {
 	mfuns: {
 		uppercase:(x)=>x.toUpperCase(),
 		lowercase:(x)=>x.toLowerCase(),
-		stringize:(x)=>String(x).split("").join("\\"),
-		lengthof: (x)=>String(x).length
+		stringize:(x)=>String(x).split("").join("\\"), //not sure
+		lengthof: (x)=>String(x).length,
+		sqrt: (x)=>Math.sqrt(x),
 	}
 }

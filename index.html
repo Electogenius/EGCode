@@ -111,7 +111,7 @@ window.onload=(function(){
 	<div class="menu"><a href="help">Help guide</a></div>
 	<h1 class="a">An experimental programming language</h1><t class="a">Do you <i>really</i> need to add a string identifier? <br />I think not.</t>
 	<h1 class="a">Try it</h1>
-	<textarea class="comp a" id='comp' rows="15">log()</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
+	<textarea class="comp a" id='comp' rows="15">log(Hello World!)</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
 	try{
 	eval(EGCode.compileToJS(editt.getValue()))
 	}catch(err){aa(err)}"class="a">► Run</button>
@@ -133,7 +133,8 @@ window.onload=(function(){
 		document.getElementById("output").appendChild(node)
 	}
 	
-	
-	//console.log(EGCode.compileToJS(sample))
+	if(window.location.href.startsWith("http://localhost:")){ //smort
+		console.log(EGCode.compileToJS(sample))
+	}
 </script>
 </html>
