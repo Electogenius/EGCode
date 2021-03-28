@@ -37,7 +37,7 @@ var EGCode = {
 							mfun=mkw
 						}
 					} else if (mkw[mkw.length - 1] == ":") { //math function
-						x += "EGCode.mfuns." + EGCode.varMatch(mkw) + "("
+						x += "EGCode.funs." + EGCode.varMatch(mkw) + "("
 						usemes.isInFunction = true
 					} else { //string
 						if (mfun !== "" || i == 0) {
