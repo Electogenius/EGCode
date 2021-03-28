@@ -1,5 +1,5 @@
 var sample =
-	`Log([1 + ( 2 - 2 ) * 2 / 2])
+	`Log([1 + 2 - 2 * 2 / 2])
 log([hello world + world])
 log([uppercase: hi])
 log([1\\ +\\ 1\\ is \\ + 1 + 1])
@@ -29,7 +29,7 @@ var EGCode = {
 				x = ""
 				for (var i = 0; i < math.length; i++) {
 					var mkw = math[i]
-					if (mkw.length == 1 && mkw.match(/[\(+\-*/\)]/) && mfun == "") { //math operator
+					if (mkw.length == 1 && (mkw.match(/[+\-*\/]/)||mkw=="("||mkw==")") && mfun == "") { //math operator
 						x += " " + mkw + " "
 						if (mkw == "(" || mkw == ")") {
 							x+="d"
@@ -76,7 +76,7 @@ var EGCode = {
 		//setup thingies
 		var output = "";
 		var usemes = {isInFunction: false};
-		code = code?.replace(/\t/g, "")
+		code = code.replace(/\t/g, "")
 		//splitting into commands
 		code = code.split(/\f?\n/);
 		//egc -> parse:
@@ -167,5 +167,12 @@ var EGCode = {
 		stringize:(x)=>String(x).split("").join("\\"), //not sure
 		lengthof: (x)=>String(x).length,
 		sqrt: (x)=>Math.sqrt(x),
+	},
+	funs: {
+		popup:function(e, f){
+			if (e == 1) {
+				alert(f)
+			}
+		}
 	}
 }
