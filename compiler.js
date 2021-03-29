@@ -1,12 +1,13 @@
 var sample =
-`Log([1 + 2 - 2 * 2 / 2])
+	`Log([1 + 2 - 2 * 2 / 2])
 log([uppercase: hello world])
 log([hello world + world])
 log([uppercase: lowercase: hi])
 log([1\\ +\\ 1\\ is \\ + 1 + 1])
+log([1 = 1 | 1 ! 2 & 2 = 2])
 var fun dO n{
 	log(you have entered |n|)
-}`//idk
+}` //idk
 
 var EGCode = {
 	compileToJS: function(code) {
@@ -30,12 +31,30 @@ var EGCode = {
 				x = ""
 				for (var i = 0; i < math.length; i++) {
 					var mkw = math[i]
-					if (mkw.length == 1 && (mkw.match(/[+\-*\/]/)||mkw=="("||mkw==")") && mfun == "") { //math operator
-						x += " " + mkw + " "
+					if (mkw.length == 1 && (mkw.match(/[+\-*\/\=\!]/) || mkw == "(" || mkw == ")") && mfun == "") { //math operator
+						var mkwt = mkw
+						//console.log(mkwt.match(/[\=\!\|\&]/))
+						if (mkw.match(/[\=\!\|\&]/)) {
+						switch (mkw) {
+							case '=':
+								mkwt = "=="
+								break;
+							case '!':
+								mkwt = "!="
+								break;
+							case '&':
+								mkwt = "&&"
+								break;
+							case '|':
+								mkwt = "||"
+								break;
+						}
+						}
+						x += " " + mkwt + " "
 						if (mkw == "(" || mkw == ")") {
-							x+="d"
-						}else{
-							mfun=mkw
+							x += "d"
+						} else {
+							mfun = mkw
 						}
 					} else if (mkw[mkw.length - 1] == ":") { //math function
 						x += "EGCode.mfuns." + EGCode.varMatch(mkw) + "("
@@ -47,12 +66,12 @@ var EGCode = {
 						} else { //support for spaces in strings inside math
 							if (i !== 0) {
 								if (usemes.isInFunction) {
-									x += EGCode.UVarToJS(mkw+")")+")"
-									usemes.isInFunction=false
-								}else{
+									x += EGCode.UVarToJS(mkw + ")") + ")"
+									usemes.isInFunction = false
+								} else {
 									var a = (EGCode.UVarToJS(mkw + ")"))
 									var char = "'"
-									if (x[x.length-1]==")") {
+									if (x[x.length - 1] == ")") {
 										char = ")"
 										if (x.endsWith("')")) {
 											char = "')"
@@ -83,7 +102,7 @@ var EGCode = {
 		}
 		//setup thingies
 		var output = "";
-		var usemes = {isInFunction: false};
+		var usemes = { isInFunction: false };
 		code = code.replace(/\t/g, "")
 		//splitting into commands
 		code = code.split(/\f?\n/);
@@ -170,14 +189,14 @@ var EGCode = {
 		return x.join("")
 	},
 	mfuns: {
-		uppercase:(x)=>x.toUpperCase(),
-		lowercase:(x)=>x.toLowerCase(),
-		stringize:(x)=>String(x).split("").join("\\"), //not sure
-		lengthof: (x)=>String(x).length,
-		sqrt: (x)=>Math.sqrt(x),
+		uppercase: (x) => x.toUpperCase(),
+		lowercase: (x) => x.toLowerCase(),
+		stringize: (x) => String(x).split("").join("\\"), //not sure
+		lengthof: (x) => String(x).length,
+		sqrt: (x) => Math.sqrt(x),
 	},
 	funs: {
-		popup:function(e, f){
+		popup: function(e, f) {
 			if (e == 1) {
 				alert(f)
 			}

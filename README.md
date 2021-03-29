@@ -1,5 +1,5 @@
 # EGCode/EGC (can also be pronounced "egg-sea")
-A programming language that is dangerously loosely typed.
+A badly implemented programming language that is dangerously loosely typed.
 
 EGCode compiles to JavaScript.
 ![](logo.JPG)
@@ -7,7 +7,7 @@ No data types (kind of)
 
 Because who needs "" and '', am I right
 
-**version: alpha 2.1**
+**version: 0.8.6**
 
 ```EGCode
 print(hello world)
