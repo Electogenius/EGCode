@@ -1,7 +1,8 @@
 var sample =
-	`Log([1 + 2 - 2 * 2 / 2])
+`Log([1 + 2 - 2 * 2 / 2])
+log([uppercase: hello world])
 log([hello world + world])
-log([uppercase: hi])
+log([uppercase: lowercase: hi])
 log([1\\ +\\ 1\\ is \\ + 1 + 1])
 var fun dO n{
 	log(you have entered |n|)
@@ -37,7 +38,7 @@ var EGCode = {
 							mfun=mkw
 						}
 					} else if (mkw[mkw.length - 1] == ":") { //math function
-						x += "EGCode.funs." + EGCode.varMatch(mkw) + "("
+						x += "EGCode.mfuns." + EGCode.varMatch(mkw) + "("
 						usemes.isInFunction = true
 					} else { //string
 						if (mfun !== "" || i == 0) {
@@ -50,10 +51,17 @@ var EGCode = {
 									usemes.isInFunction=false
 								}else{
 									var a = (EGCode.UVarToJS(mkw + ")"))
+									var char = "'"
+									if (x[x.length-1]==")") {
+										char = ")"
+										if (x.endsWith("')")) {
+											char = "')"
+										}
+									}
 									if (typeof(a) == "string") { //strings
-										x = x.slice(0, x.length - 1) + " " + EGCode.UVarToJS(mkw + ")").slice(1, EGCode.UVarToJS(mkw + ")").length)
+										x = x.slice(0, x.length - char.length) + " " + EGCode.UVarToJS(mkw + ")").slice(1, EGCode.UVarToJS(mkw + char).length)
 									} else {
-										x = x.slice(0, x.length - 1) + " " + EGCode.UVarToJS(mkw + ")") + "'"
+										x = x.slice(0, x.length - char.length) + " " + EGCode.UVarToJS(mkw + ")") + char
 									}
 								}
 							}
