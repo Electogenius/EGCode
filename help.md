@@ -44,10 +44,15 @@ seems unusual at first but actually makes sense
 [what is 1 \+ 1]
 [what is \1 \+ \1]
 both give "what is 1 + 1"
+
+so
+log([2 + 2 - 1])
+will log 3
+(quick mafs)
 ```
 ## declaring/making a function
 functions are declared using var.
-Note: functions are not fully implemented
+Note: functions are not fully implemented, you can't call a function yet
 ```
 var introduce do n{
 	log(Hello World!)
@@ -56,4 +61,4 @@ here "n" is the parameter, functions can only have 1 input which can be an array
 ```
 and speaking of arrays if necessary,
 ## arrays
-arrays are just 
+[not really implemented yet]
