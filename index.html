@@ -54,7 +54,8 @@
 		margin: auto;
 		left: 0;
 		display: block;
-		font-size: 15px
+		font-size: 15px;
+		z-index: -2
 	}
 	#run{
 		border-radius: 10px;
@@ -84,15 +85,9 @@ window.onload=(function(){
 	}, {value: TextaArea.value, mode: "asterisk", theme: "solarized dark", lineNumbers: true});
 	editt = edit
 	anime({
-		targets: ".nav",
-		opacity: 0.9,
-		duration: 1000,
-		easing: "easeInOutExpo"
-	})
-	anime({
 		targets: "*",
 		opacity: 1,
-		duration: anime.stagger(20),
+		duration: anime.stagger(50),
 		easing: "easeOutSine"
 	})
 })
@@ -109,7 +104,7 @@ window.onload=(function(){
 		<t onclick="$('.menu').toggle()" style="float:right;font-size:40px;padding-right:10px;color:#179;">V</t>
 	</div>
 	<div class="menu"><a href="help">Help guide</a></div>
-	<h1 class="a">An experimental programming language</h1><t class="a">Do you <i>really</i> need to add a string identifier? <br />I think not.</t>
+	<h1 class="a">An experimental programming language</h1><t class="a">Do you <i>really</i> need to add a string identifier? <br />No I think</t>
 	<h1 class="a">Try it</h1>
 	<textarea class="comp a" id='comp' rows="15">log(Hello World!)</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
 	try{

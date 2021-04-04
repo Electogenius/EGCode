@@ -1,3 +1,4 @@
+
 var sample =
 	`Log([1 + 2 - 2 * 2 / 2])
 log([uppercase: hello world])
@@ -198,7 +199,7 @@ var EGCode = {
 	funs: {
 		popup: function(e, f) {
 			if (e == 1) {
-				alert(f)
+				return "alert("+f+")"
 			}
 		}
 	}
