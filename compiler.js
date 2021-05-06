@@ -1,5 +1,5 @@
-function EGCode() {
-	return {
+"use strict";
+var EGCode = {
 		compileToJS: function(code) {
 			if (typeof(code) !== "string") {
 				throw ("JavaScript input must be of type string. Invalid code ", code)
@@ -173,4 +173,3 @@ function EGCode() {
 		varsSoFar: {},
 		registerVar: (name, value) => EGCode.varsSoFar[name] = value
 	}
-}
