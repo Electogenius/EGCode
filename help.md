@@ -5,25 +5,30 @@ most functions are case insensitive.
 ## how to run/use
 For tests and stuff you can use the online compiler thing, but to run an egcode file you need to:
 
-**WARNING: I have not tried these so they probably do not work**
+**WARNING: I have not tried these with deno so they probably do not work**
 1. make an variable with egcode value in it (can be imported from another file).
 ```
-var someCode = "log(hello world)""
+var someCode = "log(hello world)"
 ```
 2. get the EGCode compiler
 ```js
-var fetch=require("node-fetch");var e=require("eval") //for nodejs
+//if you are using deno/nodejs
+var fetch=require("node-fetch");
 fetch("https://electogenius.github.io/EGCode/compiler.js").then((r)=>r.text()).then((r)=>{
-	deno eval r //for deno
-	eval(r) //for web
-	e() //for nodejs
+	deno eval r; //for deno
+	eval(r); //for nodejs
 })
 ```
-well as you can see, it's very terrible and big, and 2 node modules is too much.
+well as you can see, it's very terrible and big.
+
+if you are using it in a website, add a script tag in the document's head:
+```
+<script src="https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.js"></script>
+```
 
 3. compile the code
 ```
-console.log(EGCode.compileToJS(someCode))
+console.log(EGCode.compileToJS(someCode)) //
 ```
 ## print/log text to console
 

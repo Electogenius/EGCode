@@ -1,4 +1,3 @@
-"use strict";
 var EGCode = {
 		compileToJS: function(code) {
 			if (typeof(code) !== "string") {
