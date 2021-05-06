@@ -1,4 +1,4 @@
-function EG() {
+function EGCode() {
 	return {
 		compileToJS: function(code) {
 			if (typeof(code) !== "string") {
