@@ -7,7 +7,6 @@
 	<title>EGCode</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="compiler.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js" integrity="sha512-M1DpFDDFHNgGdgVsSkTP1sjfWC7mQFJM3obQo8gyKHbZmbmr95Kl9wPYa5T70BFQBi0+/TlcG6IZDLowJCbKBQ==" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/asterisk/asterisk.min.js" integrity="sha512-IYS/naxI2T1TDY2LMuCA9qw9O9mG37u/8AIMM0l9K8gvUEodPZL1W4bOcWzUi/myrpZ4JWc7PlY0bAnSyixC0g==" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.css" integrity="sha512-pUWtXiGlFCCny0AjRoju8IelzzeY9k13UCkai+Dpx2C4ocnLu9yqZHDy84XKpZ6BbyZA9gnSkUf0di4n9pcJ5g==" crossorigin="anonymous" />
@@ -16,12 +15,14 @@
 <style type="text/css" media="all">
 	@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
 	body {
 		font-family: "Open Sans", sans-serif;
 		background-color: #222;
 		/*just like everything else I made*/
 		color: white;
 	}
+
 	.nav {
 		background-color: #28b;
 		height: 50px;
@@ -31,6 +32,7 @@
 		top: 0;
 		opacity: 0;
 		border-radius: 10px;
+		z-index: 2
 	}
 
 	.menu {
@@ -47,7 +49,7 @@
 		background-color: black;
 		color: white !important;
 		font-family: Inconsolata, monospace;
-		/*border: 1px solid white;*/ 
+		/*border: 1px solid white;*/
 		border-radius: 7px;
 		width: 95%;
 		position: relative;
@@ -55,43 +57,53 @@
 		left: 0;
 		display: block;
 		font-size: 15px;
-		z-index: -2
+		z-index: 1
 	}
-	#run{
+
+	#run {
 		border-radius: 10px;
 		background-color: greenyellow;
 		font-size: 25px;
 		padding: 10px;
 		margin-left: 20px
 	}
-	#output{
+
+	#output {
 		padding: 10px;
-		overflow: scroll
+		overflow: scroll;
 	}
-	line{
+
+	line {
 		display: block
 	}
+
 	/*.a{
 		opacity: 0;
 	}*/
 </style>
-<script type="text/javascript" charset="utf-8">
-var editt
-window.onload=(function(){
-	document.querySelectorAll("*").forEach((e)=>{e.style.opacity=0})
-	var TextaArea = document.getElementById("comp")
-	var edit = CodeMirror(function(elt) {
-	TextaArea.parentNode.replaceChild(elt, TextaArea);
-	}, {value: TextaArea.value, mode: "asterisk", theme: "solarized dark", lineNumbers: true});
-	editt = edit
-	anime({
-		targets: "*",
-		opacity: 1,
-		duration: anime.stagger(50),
-		easing: "easeOutSine"
+<script type="text/javascript" charset="utf-8" type="module">
+	var EGCode = await import("/compiler.mjs").then(()=>{
+		console.log(EGCode)
 	})
-})
 </script>
+<script type="text/javascript" charset="utf-8">
+	var editt
+	window.onload = function() {
+		document.querySelectorAll("*").forEach((e) => { e.style.opacity = 0 })
+		var TextaArea = document.getElementById("comp")
+		var edit = CodeMirror(function(elt) {
+			TextaArea.parentNode.replaceChild(elt, TextaArea);
+		}, { value: TextaArea.value, mode: "asterisk", theme: "solarized dark", lineNumbers: true });
+		editt = edit
+		anime({
+			targets: "*",
+			opacity: 1,
+			duration: anime.stagger(50),
+			easing: "easeOutSine"
+		})
+	}
+</script>
+
 <body>
 	&nbsp;
 	<div class="nav">
@@ -104,32 +116,35 @@ window.onload=(function(){
 		<t onclick="$('.menu').toggle()" style="float:right;font-size:40px;padding-right:10px;color:#179;">V</t>
 	</div>
 	<div class="menu"><a href="help">Help guide</a></div>
-	<h1 class="a">An experimental programming language</h1><t class="a">Do you <i>really</i> need to add a string identifier? <br />No I think</t>
+	<h1 class="a">An experimental programming language</h1>
+	<t class="a">Do you <i>really</i> need to add a string identifier? <br />No I think</t>
 	<h1 class="a">Try it</h1>
-	<textarea class="comp a" id='comp' rows="15">log(Hello World!)</textarea><button id="run"onclick="document.getElementById('output').innerHTML='';
+	<textarea class="comp a" id='comp' rows="15">log(Hello World!)</textarea><button id="run" onclick="document.getElementById('output').innerHTML='';
 	try{
 	eval(EGCode.compileToJS(editt.getValue()))
-	}catch(err){aa(err)}"class="a">► Run</button>
+	}catch(err){aa(err)}" class="a">► Run</button>
 	<pre id="output" class="CodeMirror a"></pre>
 	<script src="AAAAAA.js" type="text/javascript" charset="utf-8"></script>
 </body>
 <script type="text/javascript" charset="utf-8">
-	console.log = function(text){
+	/*console.log = function(text) {
 		var node = document.createElement('line')
 		var texN = document.createTextNode(text)
 		node.appendChild(texN)
 		document.getElementById("output").appendChild(node)
 	}
-	function aa(a,b,c,d){
+
+	function aa(a, b, c, d) {
 		var node = document.createElement('line')
 		node.style.backgroundColor = "red"
 		var texN = document.createTextNode(a)
 		node.appendChild(texN)
 		document.getElementById("output").appendChild(node)
 	}
-	
-	if(window.location.href.startsWith("http://localhost:")){ //smort
+
+	if (window.location.href.startsWith("http://localhost:")) { //smort
 		console.log(EGCode.compileToJS(sample))
-	}
+	}*/
 </script>
+
 </html>
