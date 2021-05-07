@@ -27,12 +27,12 @@ eval(EGCode.compileToJS(someCode));
 well as you can see, it's very terrible and big.
 
 if you are using it in a website, add a script tag in the document's head:
-```
+```html
 <script src="https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.js"></script>
 ```
 
 3. compile the code
-```
+```js
 console.log(EGCode.compileToJS(someCode)) //
 ```
 ## print/log text to console
