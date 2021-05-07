@@ -15,8 +15,7 @@ var someCode = "log(hello world)"
 //if you are using deno/nodejs
 var fetch=require("node-fetch");
 fetch("https://electogenius.github.io/EGCode/compiler.js").then((r)=>r.text()).then((r)=>{
-	deno eval r; //for deno
-	eval(r); //for nodejs
+	eval(r); //works for both node and deno
 })
 ```
 well as you can see, it's very terrible and big.
