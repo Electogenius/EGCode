@@ -5,7 +5,6 @@ most functions are case insensitive.
 ## how to run/use
 For tests and stuff you can use the online compiler thing, but to run an egcode file you need to:
 
-**WARNING: I have not tried these with deno so they probably do not work**
 1. make an variable with egcode value in it (can be imported from another file).
 ```
 var someCode = "log(hello world)"
