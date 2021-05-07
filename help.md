@@ -12,12 +12,19 @@ var someCode = "log(hello world)"
 ```
 2. get the EGCode compiler
 ```js
-//if you are using deno/nodejs
+//if you are using nodejs
 var fetch=require("node-fetch");
 fetch("https://electogenius.github.io/EGCode/compiler.js").then((r)=>r.text()).then((r)=>{
-	eval(r); //works for both node and deno
+	eval(r);
 })
 ```
+
+or in Deno
+```js
+import EGCode from 'someurlhere';
+eval(EGCode.compileToJS(someCode));
+```
+
 well as you can see, it's very terrible and big.
 
 if you are using it in a website, add a script tag in the document's head:
