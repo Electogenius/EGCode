@@ -3,29 +3,34 @@ ok
 
 most functions are case insensitive.
 ## how to run/use
-For tests and stuff you can use the online compiler thing, but to run an egcode file you need to:
+For small tests and stuff you can use the [online compiler](https://electogenius.github.io/electo/likes/ruining/EGCode), and to make a codepen with an EGCode template go [here](http://codepen.io/pen?template=MWpWRmx) but to run egcode yourself you need to:
 
-**WARNING: I have not tried these with deno so they probably do not work**
 1. make an variable with egcode value in it (can be imported from another file).
-```
+```js
 var someCode = "log(hello world)"
 ```
-2. get the EGCode compiler
+2. get the EGCode compiler.
+
+### if you are using deno:
 ```js
-//if you are using deno/nodejs
-var fetch=require("node-fetch");
-fetch("https://electogenius.github.io/EGCode/compiler.js").then((r)=>r.text()).then((r)=>{
-	deno eval r; //for deno
-	eval(r); //for nodejs
-})
+import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.js";
+egc.compileToJS(someCode)
 ```
 well as you can see, it's very terrible and big.
 
-if you are using it in a website, add a script tag in the document's head:
+### if you are using it in a website:
+add a script tag with type="module" in the document's head (**note: EGCode can only be accessed in the module tag**):
+```html
+<script src="module">
+import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.js";
+egc.compileToJS(someCode)
+</script>
 ```
-<script src="https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.js"></script>
+### if you are using nodejs:
+```js
+import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.js"
+egc.compileToJS(someCode)
 ```
-
 3. compile the code
 ```
 console.log(EGCode.compileToJS(someCode)) //
@@ -44,7 +49,7 @@ variable name must be letters, underscores and hyphens
 
 math stuff is marked by box brackets, `[]` anything in between it will be treated, *differently*.
 
-```
+```egc
 [1]
 gives 1
 
@@ -67,7 +72,7 @@ NOTE: if you're using this in a js string, you need 2 backslashes because only t
 
 [what is 1 + 1]
 gives "what is 11"
-seems unusual at first but actually makes sense
+seems unusual at first but actually makes sense, it adds "what is 1" and "1"
 
 [what is 1 \+ 1]
 [what is \1 \+ \1]
@@ -75,13 +80,12 @@ both give "what is 1 + 1"
 
 so
 log([2 + 2 - 1])
-will log 3
-(quick mafs)
+will log 3 to the console
 ```
 ## declaring/making a function
 functions are declared using var.
 Note: functions are not fully implemented, you can't call a function yet
-```
+```egc
 var introduce do n{
 	log(Hello World!)
 }

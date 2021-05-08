@@ -1,22 +1,29 @@
 <!doctype html>
 <html>
-	<head>
-		<script type="module">
-			import EGCode from "/compiler.module.js"
-			console.log(EGCode)
-		</script>
-	</head>
-	<body>
-		<script>
-			if(location.href.startsWith("http://localhost")){
-				/*document.body.innerHTML = EGCode.compileToJS(
-`
 
-`)*/
-			}else{
-				location="https://electogenius.github.io/electo/likes/ruining/EGCode"
-			}
-		</script>
-		
-	</body>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js" integrity="sha512-YBk7HhgDZvBxmtOfUdvX0z8IH2d10Hp3aEygaMNhtF8fSOvBZ16D/1bXZTJV6ndk/L/DlXxYStP8jrF77v2MIg==" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-okaidia.min.css">
+	<style type="text/css" media="all">
+	body{
+		background-color: black
+	}
+	</style>
+</head>
+
+<body>
+	<pre><code class="language-javascript" id="c"></code></pre>
+	<script type="module">
+		import egc from "/compiler.module.js"
+		if(location.href.startsWith("http://localhost")){
+			c.innerHTML = egc.compileToJS(
+`log([hello + world])
+
+`)
+		}else{
+			location="https://electogenius.github.io/electo/likes/ruining/EGCode"
+		}
+	</script>
+</body>
+
 </html>
