@@ -21,7 +21,7 @@ well as you can see, it's very terrible and big.
 ### if you are using it in a website:
 add a script tag with type="module" in the document's head (**note: EGCode can only be accessed in the module tag**):
 ```html
-<script src="module">
+<script type="module">
 import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.module.js";
 egc.compileToJS(someCode)
 </script>
