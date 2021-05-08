@@ -13,7 +13,7 @@ var someCode = "log(hello world)"
 
 ### if you are using deno:
 ```js
-import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.js";
+import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.module.js";
 egc.compileToJS(someCode)
 ```
 well as you can see, it's very terrible and big.
@@ -22,13 +22,13 @@ well as you can see, it's very terrible and big.
 add a script tag with type="module" in the document's head (**note: EGCode can only be accessed in the module tag**):
 ```html
 <script src="module">
-import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.js";
+import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.module.js";
 egc.compileToJS(someCode)
 </script>
 ```
 ### if you are using nodejs:
 ```js
-import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.js"
+import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.module.js"
 egc.compileToJS(someCode)
 ```
 3. compile the code
