@@ -17,7 +17,7 @@
 		import egc from "/compiler.module.js"
 		if(location.href.startsWith("http://localhost")){
 			c.innerHTML = egc.compileToJS(
-`log([hello + world])
+`log()
 
 `)
 		}else{

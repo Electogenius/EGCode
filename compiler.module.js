@@ -173,3 +173,4 @@ var EGCode = {
 		registerVar: (name, value) => EGCode.varsSoFar[name] = value
 	}
 export default EGCode;
+try{if(module!==undefined)module.exports=EGCode}catch(e){}
