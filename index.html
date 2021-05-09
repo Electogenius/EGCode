@@ -8,6 +8,9 @@
 	body{
 		background-color: black
 	}
+	code{
+		font-family: menlo !important
+	}
 	</style>
 </head>
 
@@ -15,13 +18,12 @@
 	<pre><code class="language-javascript" id="c"></code></pre>
 	<script type="module">
 		import egc from "/compiler.module.js"
-		if(location.href.startsWith("http://localhost")){
+		if(window.location.href.startsWith("http://localhost")){
 			c.innerHTML = egc.compileToJS(
-`log()
-
+`log(hel'lo)
 `)
 		}else{
-			location="https://electogenius.github.io/electo/likes/ruining/EGCode"
+			window.location="https://electogenius.github.io/electo/likes/ruining/EGCode"
 		}
 	</script>
 </body>
