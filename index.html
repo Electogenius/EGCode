@@ -17,11 +17,18 @@
 <body>
 	<pre><code class="language-javascript" id="c"></code></pre>
 	<script type="module">
-		import egc from "/compiler.module.js"
+		import EGCode from "/compiler.module.js"
 		if(window.location.href.startsWith("http://localhost")){
-			c.innerHTML = egc.compileToJS(
-`log(hel'lo)
+			let d = EGCode.compileToJS(
+`
+	var v&#@[a]r'ia'błèle()
+	= variable 5
+	log(haxxed\`);alert("HA");//\`)
 `)
+c.innerText = d
+try{
+	
+}catch(e){}
 		}else{
 			window.location="https://electogenius.github.io/electo/likes/ruining/EGCode"
 		}
