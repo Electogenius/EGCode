@@ -56,7 +56,7 @@ var EGCode = {
 			return a.toLowerCase() === b.toLowerCase()
 		}
 		//setup thingies
-		var output = "";
+		var output = "EGCode.resetVals();\n";
 		var usemes = { isInFunction: false };
 		code = code.replace(/\t/g, "")
 		//splitting into commands
@@ -155,7 +155,6 @@ var EGCode = {
 		console.log(output) */
 		return output
 	},
-	clearData: 0,
 	varMatch: function(test) {
 		var x = test.toLowerCase().match(/[A-z0-9_]/g)
 		return x.join("").replace(/\[|\]/g, "")
