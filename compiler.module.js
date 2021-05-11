@@ -2,9 +2,10 @@ var EGCode = {
 	compileToJS: function(code) {
 		if (typeof(code) !== "string") {
 			throw ("JavaScript input must be of type string. Invalid code ", code)
-			}
+		}
 		//UVar -> js
 		EGCode.UVarToJS = function(uvar) {
+			if (uvar == "") return "0"
 			let x = uvar
 			var isNumber = false
 			//x = x.slice(0, x.length - 1)
@@ -44,10 +45,10 @@ var EGCode = {
 			if (!isNumber) {
 				//x = x.replace(/\\\\/g, "༷") 
 				x = x.replace(/\\/g, "");
-				x = x.replace(/`/g,"\\`")
+				x = x.replace(/`/g, "\\`")
 				x = "`" + x + "`"
-			}else{
-				x = x.replace(/`/g,"\\")
+			} else {
+				x = x.replace(/`/g, "\\")
 			}
 			return x
 		}
@@ -99,6 +100,7 @@ var EGCode = {
 		for (var ci = 0; ci < arrr.length; ci++) {
 			var commandArr = arrr[ci]
 			usemes.cmdName = commandArr[0]
+			var op = output
 			for (var kwdInd in commandArr) {
 				var kwd = commandArr[kwdInd]
 
@@ -125,13 +127,13 @@ var EGCode = {
 						if (iSE(kwd, " do")) { // = function(
 							usemes.registerVar += "function(e_"
 						} else {
-							usemes.registerVar += rem() +")"
+							usemes.registerVar += rem() + ")"
 						}
 					} else {
-						usemes.registerVar += EGCode.varMatch(kwd.slice(0,-1)) + "){"// e){
+						usemes.registerVar += EGCode.varMatch(kwd.slice(0, -1)) + "){" // e){
 					}
 					if (kwdInd == commandArr.length - 1) {
-						output +=  usemes.registerVar
+						output += usemes.registerVar
 						usemes.registerVar = undefined
 					}
 				}
@@ -143,8 +145,15 @@ var EGCode = {
 						output += rem() + ")"
 					}
 				}
-				if (usemes.cmdName == "}") output += "}"
-				if(usemes.cmdName ==  "]") output += "})"
+				if (usemes.cmdName == "}") output += "})"
+				if (usemes.cmdName == "]") output += "}"
+				if (op == output && kwdInd == 1) {
+					if(typeof EGCode.funs[name] == "string"){
+						eval(EGCode.funs[name])
+					}else{
+						output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName) + "', " + rem() + ")\n"
+					}
+				}
 			}
 			output += "\n"
 		}
@@ -157,6 +166,7 @@ var EGCode = {
 	},
 	varMatch: function(test) {
 		var x = test.toLowerCase().match(/[A-z0-9_]/g)
+		if (x === null) return "-"
 		return x.join("").replace(/\[|\]/g, "")
 	},
 	mfuns: {
@@ -166,18 +176,29 @@ var EGCode = {
 		lengthof: (x) => String(x).length,
 		sqrt: (x) => Math.sqrt(x),
 		ask: (x) => prompt(x),
-		n: (x)=>x.split("").join("\\")
+		n: (x) => x.split("").join("\\")
 	},
 	funs: { //test
-		alert: function(e, f) {
-			if (e == 1) {
-				return "alert(" + f + ")"
-			}
+		alert: function(e) {
+			alert(e)
 		}
 	},
 	varsSoFar: {},
-	registerVar: (name, value) => {EGCode.varsSoFar[name] = value},
-	setVar: (name, value) => {EGCode.varsSoFar[name] = value},
+	registerVar: (name, value) => {
+		if (typeof value == "function") EGCode.funs[name] = value;
+		else EGCode.varsSoFar[name] = value
+	},
+	setVar: (name, value) => {
+		if(name in EGCode.varsSoFar){
+			EGCode.varsSoFar[name] = value
+		}
+	},
 	resetVals: e => EGCode.varsSoFar = {},
+	callFunction: (name, param) => {
+		if (typeof EGCode.funs[name] == "function") {
+			EGCode.funs[name](param)
+		}
+		//if (typeof EGCode.funs[name] == "string") try { eval(EGCode.funs[name]) } catch (e) {}
+	}
 }
 export default EGCode;

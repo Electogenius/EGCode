@@ -78,13 +78,15 @@ seems unusual at first but actually makes sense, it adds "what is 1" and "1"
 [what is \1 \+ \1]
 both give "what is 1 + 1"
 
+[1 \+ 1 is + ( 1 + 1 )]
+gives "1 + 1 is 2". (spaces around brackets are necessary)
 so
 log([2 + 2 - 1])
 will log 3 to the console
 ```
 ## declaring/making a function
 functions are declared using var.
-Note: functions are not fully implemented, you can't call a function yet
+Note: functions are not fully implemented, you can't use parameters in functions yet
 ```egc
 var introduce do n{
 	log(Hello World!)
