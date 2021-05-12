@@ -27,7 +27,8 @@ var EGCode = {
 							if (/[\&\|]/.test(keyword)) result += keyword
 							if (keyword != "(" && keyword != ")") previousType = "operator"
 						} else { //strings||functions
-							if ((keyword.endsWith("(")) && !(keyword.includes("\\"))) { //functions
+							if (keyword.endsWith("(") && (keyword==EGCode.varMatch(keyword))) { //functions
+								result += "EGCode.mfuns['"+EGCode.varMatch(keyword)+"']("
 							} else { //strings
 								if (previousType == "string") { result = result.slice(0, -1) }
 								result += ((previousType == "string") ? " " : "`") + keyword + "`"
@@ -48,7 +49,7 @@ var EGCode = {
 				x = x.replace(/`/g, "\\`")
 				x = "`" + x + "`"
 			} else {
-				x = x.replace(/`/g, "\\")
+				//x = x.replace(/`/g, "\\")
 			}
 			return x
 		}
@@ -103,7 +104,6 @@ var EGCode = {
 			var op = output
 			for (var kwdInd in commandArr) {
 				var kwd = commandArr[kwdInd]
-
 				function rem() {
 					if (kwd.endsWith(")")) return EGCode.UVarToJS(kwd.slice(0, -1));
 					return EGCode.UVarToJS(kwd.slice(1))

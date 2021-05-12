@@ -21,11 +21,9 @@
 		if(window.location.href.startsWith("http://localhost")){
 			let d = EGCode.compileToJS(
 `
-= variable 5
-var doComplexMath do n{
-	log([1 + 1])
+var greet do n{
+	log([hi])
 }
-	docomplexmath()
 `)
 try{eval(d)}catch(e){
 	console.log(e)
