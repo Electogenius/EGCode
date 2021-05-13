@@ -21,9 +21,19 @@
 		if(window.location.href.startsWith("http://localhost")){
 			let d = EGCode.compileToJS(
 `
+import(browser-p5)
 var greet do n{
 	log([hi])
 }
+log([1 = 1 & 7 ! 7 + 2])
+
+clog([uppercase( hello ) + lowercase( AAAAA ) noexisto( hello )])
+flog([1 = n( hello ) test n( + 10 ) ])
+log([hello world])
+log([1 plus 1 is ( 1 + 1 )])
+log([what == what])
+
+log([( hello ) hello])
 `)
 try{eval(d)}catch(e){
 	console.log(e)

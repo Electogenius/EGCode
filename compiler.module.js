@@ -19,26 +19,46 @@ var EGCode = {
 				var array = x.split(" ")
 				var result = ""
 				var previousType = "" //type of previous keyword
+				var previousKeyword = ""
 				array.forEach(keyword => {
 					//filter out the type of the keyword
 					if (Number.isNaN(Number(keyword))) { //non-numbers
-						if ((/[+\-*\/\&\|\(\)\<\>]/).test(keyword) && previousType != "operator") { //math operators
+						if ((/(\+|\-|\*|\/|\&|\||\<|\>|\=|\!)/).test(keyword) && previousType != "operator" && keyword.length == 1) { //math operators
+							if (keyword != "!") { result += keyword } else { keyword += "=" }
+							if (/[\&\|\=]/.test(keyword)) result += keyword;
+							
+							previousType = "operator"
+						}else if (keyword == "(" || keyword == ")") {
+							//fit into previous type:
+							if(previousType == "string")result += "+"
 							result += keyword
-							if (/[\&\|]/.test(keyword)) result += keyword
-							if (keyword != "(" && keyword != ")") previousType = "operator"
+							
+							previousType = "bracket"
 						} else { //strings||functions
-							if (keyword.endsWith("(") && (keyword==EGCode.varMatch(keyword))) { //functions
-								result += "EGCode.mfuns['"+EGCode.varMatch(keyword)+"']("
+							if (keyword.endsWith("(") && (keyword == EGCode.varMatch(keyword) + "(")) { //functions
+								result += "EGCode.mfun('" + EGCode.varMatch(keyword) + "', "
+								//fit into previous type:
+								previousType = "mfun"
 							} else { //strings
-								if (previousType == "string") { result = result.slice(0, -1) }
-								result += ((previousType == "string") ? " " : "`") + keyword + "`"
+								if (previousType == "string") result = result.slice(0, -1)
+								if (previousType == "bracket" && previousKeyword == ")") result += "+"
+								if (previousType == "mfun" || previousType == "number") result += "+"
+								result += ((previousType == "string") ? " " : (previousType == "number") ? "` " : "`") + keyword + "`"
 								previousType = "string"
 							}
 						}
 					} else { //numbers
-						result += keyword
-						previousType = "number"
+						if (previousType == "string") {
+							result=result.slice(0,-1)
+							result += " "+keyword+"`"
+							previousType = "string"
+							//console.log(previousKeyword)
+						} else {
+							result += keyword
+							previousType = "number"
+						}
 					}
+					previousKeyword = keyword
 				})
 				x = result
 			} else { //string
@@ -104,6 +124,7 @@ var EGCode = {
 			var op = output
 			for (var kwdInd in commandArr) {
 				var kwd = commandArr[kwdInd]
+
 				function rem() {
 					if (kwd.endsWith(")")) return EGCode.UVarToJS(kwd.slice(0, -1));
 					return EGCode.UVarToJS(kwd.slice(1))
@@ -148,9 +169,9 @@ var EGCode = {
 				if (usemes.cmdName == "}") output += "})"
 				if (usemes.cmdName == "]") output += "}"
 				if (op == output && kwdInd == 1) {
-					if(typeof EGCode.funs[name] == "string"){
+					if (typeof EGCode.funs[name] == "string") {
 						eval(EGCode.funs[name])
-					}else{
+					} else {
 						output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName) + "', " + rem() + ")\n"
 					}
 				}
@@ -189,7 +210,7 @@ var EGCode = {
 		else EGCode.varsSoFar[name] = value
 	},
 	setVar: (name, value) => {
-		if(name in EGCode.varsSoFar){
+		if (name in EGCode.varsSoFar) {
 			EGCode.varsSoFar[name] = value
 		}
 	},
@@ -199,6 +220,13 @@ var EGCode = {
 			EGCode.funs[name](param)
 		}
 		//if (typeof EGCode.funs[name] == "string") try { eval(EGCode.funs[name]) } catch (e) {}
+	},
+	mfun: (fname, test) => {
+		if (fname in EGCode.mfuns) {
+			return EGCode.mfuns[fname](test)
+		} else {
+			return fname + "( " + test + " )"
+		}
 	}
 }
 export default EGCode;

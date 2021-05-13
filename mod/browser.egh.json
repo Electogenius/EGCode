@@ -1,6 +1,0 @@
-{
-	"name": "browser",
-	"c": {
-		"alert": [["", "output+='window.alert('+rem()+')'"]]
-	}
-}
