@@ -169,8 +169,8 @@ var EGCode = {
 				if (usemes.cmdName == "}") output += "})"
 				if (usemes.cmdName == "]") output += "}"
 				if (op == output && kwdInd == 1) {
-					if (typeof EGCode.funs[name] == "string") {
-						eval(EGCode.funs[name])
+					if (typeof EGCode.funs[usemes.cmdName] == "string") {
+						eval(EGCode.funs[usemes.cmdName])
 					} else {
 						output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName) + "', " + rem() + ")\n"
 					}
