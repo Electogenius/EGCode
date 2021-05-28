@@ -18,20 +18,15 @@
 	<pre><code class="language-javascript" id="c"></code></pre>
 	<script type="module">
 		import EGCode from "/compiler.module.js"
-		console.log(EGCode)
 		window.EGCode = EGCode
 		if(window.location.href.startsWith("http://localhost")){
-			//EGCode.library_link = "http://localhost:7700/eglib/"
+			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
-var x,,y(29)
-\'()
 with_test do{
-	 alert(hi)
-	log(yay)
+	log([hello + ask( what is thy )])
 }
 `)
-console.log(EGCode)
 try{eval(d)}catch(e){console.log(e)}
 			c.innerText = d
 		}else{

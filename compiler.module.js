@@ -250,7 +250,7 @@ var EGCode = {
 		}
 	},
 	import: (lib)=>{
-		return fetch(EGCode.cors+EGCode.library_link+lib+".js").then(e=>{if(e.ok){return e.json()}else{throw("oops")};console.log(e)})
+		return fetch(EGCode.cors+EGCode.library_link+lib+".js").then(e=>{if(e.ok){return e.json()}else{throw("error fetching file")}})
 	},
 	library_link:"https://cdn.jsdelivr.net/gh/Electogenius/EGCode@main/eglib/",
 	cors: "https://api.allorigins.win/get?url=",
