@@ -18,27 +18,22 @@
 	<pre><code class="language-javascript" id="c"></code></pre>
 	<script type="module">
 		import EGCode from "/compiler.module.js"
+		console.log(EGCode)
+		window.EGCode = EGCode
 		if(window.location.href.startsWith("http://localhost")){
+			//EGCode.library_link = "http://localhost:7700/eglib/"
 			let d = EGCode.compileToJS(
 `
-import(browser-p5)
-var greet do n{
-	log([hi])
+var x,,y(29)
+\'()
+with_test do{
+	 alert(hi)
+	log(yay)
 }
-log([1 = 1 & 7 ! 7 + 2])
-
-clog([uppercase( hello ) + lowercase( AAAAA ) noexisto( hello )])
-flog([1 = n( hello ) test n( + 10 ) ])
-log([hello world])
-log([1 plus 1 is ( 1 + 1 )])
-log([what == what])
-
-log([( hello ) hello])
 `)
-try{eval(d)}catch(e){
-	console.log(e)
-}
-c.innerText = d
+console.log(EGCode)
+try{eval(d)}catch(e){console.log(e)}
+			c.innerText = d
 		}else{
 			window.location="https://electogenius.github.io/electo/likes/ruining/EGCode"
 		}

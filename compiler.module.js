@@ -30,19 +30,21 @@ var EGCode = {
 							previousType = "operator"
 						}else if (keyword == "(" || keyword == ")") {
 							//fit into previous type:
-							if(previousType == "string")result += "+"
+							if(previousType == "string"&&keyword=="(")result += "+"
 							result += keyword
 							
 							previousType = "bracket"
 						} else { //strings||functions
-							if (keyword.endsWith("(") && (keyword == EGCode.varMatch(keyword) + "(")) { //functions
-								result += "EGCode.mfun('" + EGCode.varMatch(keyword) + "', "
+							if (keyword.endsWith("(") && (keyword == EGCode.varMatch(keyword,"p") + "(")) { //functions
+								result += "EGCode.mfun('" + EGCode.varMatch(keyword,"p") + "', "
 								//fit into previous type:
+								if(previousKeyword == ")"||previousType=="string"||previousType=="number")keyword+="+"
+								
 								previousType = "mfun"
 							} else { //strings
 								if (previousType == "string") result = result.slice(0, -1)
 								if (previousType == "bracket" && previousKeyword == ")") result += "+"
-								if (previousType == "mfun" || previousType == "number") result += "+"
+								if (previousType == "number") result += "+"
 								result += ((previousType == "string") ? " " : (previousType == "number") ? "` " : "`") + keyword + "`"
 								previousType = "string"
 							}
@@ -142,7 +144,7 @@ var EGCode = {
 					if (kwdInd == 0) { //var
 						usemes.registerVar = "EGCode.registerVar('"
 					} else if (kwdInd == 1) { //varname
-						usemes.registerVar += EGCode.varMatch(kwd)
+						usemes.registerVar += EGCode.varMatch(kwd,"p")
 					} else if (kwdInd == 2) { // = value
 						usemes.registerVar += "', "
 						if (iSE(kwd, " do")) { // = function(
@@ -170,9 +172,11 @@ var EGCode = {
 				if (usemes.cmdName == "]") output += "}"
 				if (op == output && kwdInd == 1) {
 					if (typeof EGCode.funs[usemes.cmdName] == "string") {
-						eval(EGCode.funs[usemes.cmdName])
+						new Function(EGCode.funs[usemes.cmdName]).call()
 					} else {
-						output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName) + "', " + rem() + ")\n"
+						if(!commandArr[commandArr.length-1].endsWith("{")){output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName,"p") + "', " + rem() + ")\n"}else{
+							output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName,"p") + "', function(e_" + EGCode.varMatch(kwd.slice(0, -1)) + "){"
+						}
 					}
 				}
 			}
@@ -185,9 +189,15 @@ var EGCode = {
 		console.log(output) */
 		return output
 	},
-	varMatch: function(test) {
-		var x = test.toLowerCase().match(/[A-z0-9_]/g)
-		if (x === null) return "-"
+	varMatch: function(test, type) {
+		var x = test.toLowerCase()
+		if (type != "p") { //p = "pure"
+			x = x.replace(/,,/g, ", ")
+		}
+		if(type==undefined){x=x.match(/[A-z0-9_,]/g)}else{
+			x=x.match(/[A-z0-9_]/g)
+		}
+		if (x === null) return "_"
 		return x.join("").replace(/\[|\]/g, "")
 	},
 	mfuns: {
@@ -200,8 +210,8 @@ var EGCode = {
 		n: (x) => x.split("").join("\\")
 	},
 	funs: { //test
-		alert: function(e) {
-			alert(e)
+		imports: function(e){
+			
 		}
 	},
 	varsSoFar: {},
@@ -216,8 +226,19 @@ var EGCode = {
 	},
 	resetVals: e => EGCode.varsSoFar = {},
 	callFunction: (name, param) => {
-		if (typeof EGCode.funs[name] == "function") {
-			EGCode.funs[name](param)
+		if(!name.startsWith("with_")){
+			if (typeof EGCode.funs[name] == "function") {
+				EGCode.funs[name](param)
+			}
+		}else{
+			if(typeof param == "function"){
+				name.split("_").slice(1).forEach(lib=>{
+					EGCode.import(lib).then((res)=>{
+						EGCode.loadlib(new Function(res.contents).call())
+						param.call()
+					})
+				})
+			}
 		}
 		//if (typeof EGCode.funs[name] == "string") try { eval(EGCode.funs[name]) } catch (e) {}
 	},
@@ -226,6 +247,19 @@ var EGCode = {
 			return EGCode.mfuns[fname](test)
 		} else {
 			return fname + "( " + test + " )"
+		}
+	},
+	import: (lib)=>{
+		return fetch(EGCode.cors+EGCode.library_link+lib+".js").then(e=>{if(e.ok){return e.json()}else{throw("oops")};console.log(e)})
+	},
+	library_link:"https://cdn.jsdelivr.net/gh/Electogenius/EGCode@main/eglib/",
+	cors: "https://api.allorigins.win/get?url=",
+	loadlib: o=>{
+		for (var prop in o.mfuns) {
+			EGCode.mfuns[prop]=o.mfuns[prop]
+		}
+		for (var prop in o.funs) {
+			EGCode.funs[prop] = o.funs[prop]
 		}
 	}
 }

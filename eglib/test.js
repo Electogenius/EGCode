@@ -1,9 +1,9 @@
 return {
 	"name": "browser",
 	"funs":{
-		alert: window.alert,
+		"alert": e=>{window.alert(e)},
 	},
 	"mfuns": {
-		ask: window.prompt
+		ask: e=>{window.prompt(e)}
 	}
 }
