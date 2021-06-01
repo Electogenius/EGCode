@@ -19,12 +19,13 @@
 	<script type="module">
 		import EGCode from "/compiler.module.js"
 		window.EGCode = EGCode
-		if(window.location.href.startsWith("http://localhost")){
+		if(window.location.href.startsWith("http://localhost:")){
 			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
-with_test do{
-	log([hello + ask( what is thy )])
+var name(ask( thy name? ))
+var greet do n{
+	
 }
 `)
 try{eval(d)}catch(e){console.log(e)}

@@ -22,28 +22,33 @@ well as you can see, it's very terrible and big.
 add a script tag with type="module" in the document's head (**note: EGCode can only be accessed in the module tag**):
 ```html
 <script type="module">
-import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.module.js";
-egc.compileToJS(someCode)
+import EGCode from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.module.js";
+EGCode.compileToJS(someCode)
 </script>
 ```
 ### if you are using nodejs:
 ```js
-import egc /*or some other variable name*/ from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.module.js"
-egc.compileToJS(someCode)
+import EGCode from "https://cdn.statically.io/gh/electogenius/EGCode/main/compiler.module.js"
+EGCode.compileToJS(someCode)
 ```
 3. compile the code
 ```
-console.log(EGCode.compileToJS(someCode)) //
+new Function(EGCode.compileToJS(someCode)).call() //"hello world"
 ```
 ## print/log text to console
 
 `log(text)`
 
 text can be anything you want, '' and "" should not be added.
+
+so here's the shortest hello world:
+```egc
+log(hello world)
+```
 ## variable declaration
 `var variablename(value)`
 
-variable name must be letters, underscores and hyphens
+variable name must be letters, underscores and hyphens, and the value is necessary
 
 ## math
 
@@ -83,6 +88,13 @@ gives "1 + 1 is 2". (spaces around brackets are necessary)
 so
 log([2 + 2 - 1])
 will log 3 to the console
+
+[$x]
+If a variable named x exists, gives its value, otherwise returns '$x'
+
+[$n + \  + $item\s]
+if a variable named n and one named item exist, it will give "(n's value) (item's value)s"
+so if n is 3900 and item is "transistor", log([$n + \  + $item\s]) will log "3900 transistors" to the console
 ```
 ## declaring/making a function
 functions are declared using var.

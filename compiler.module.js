@@ -28,7 +28,7 @@ var EGCode = {
 							if (/[\&\|\=]/.test(keyword)) result += keyword;
 							
 							previousType = "operator"
-						}else if (keyword == "(" || keyword == ")") {
+						}else if (keyword == "(" || keyword == ")") { //brackets
 							//fit into previous type:
 							if(previousType == "string"&&keyword=="(")result += "+"
 							result += keyword
@@ -41,12 +41,14 @@ var EGCode = {
 								if(previousKeyword == ")"||previousType=="string"||previousType=="number")keyword+="+"
 								
 								previousType = "mfun"
-							} else { //strings
+							} else if((!keyword.startsWith("$"))||EGCode.varMatch(keyword)!==keyword.slice(1)){ //strings
 								if (previousType == "string") result = result.slice(0, -1)
 								if (previousType == "bracket" && previousKeyword == ")") result += "+"
 								if (previousType == "number") result += "+"
 								result += ((previousType == "string") ? " " : (previousType == "number") ? "` " : "`") + keyword + "`"
 								previousType = "string"
+							}else{
+								result += "EGCode.getVar('"+keyword.slice(1)+"')"
 							}
 						}
 					} else { //numbers
@@ -67,12 +69,21 @@ var EGCode = {
 			}
 			if (!isNumber) {
 				//x = x.replace(/\\\\/g, "༷") 
-				x = x.replace(/\\/g, "");
+				
 				x = x.replace(/`/g, "\\`")
 				x = "`" + x + "`"
 			} else {
 				//x = x.replace(/`/g, "\\")
 			}
+			x = x.replace(/\$[^\\`]+/g, function(a, b, c) {
+				if(typeof EGCode.varsSoFar[a] !== "number"){
+					return "\${EGCode.getVar('" + EGCode.varMatch(a.split(/\\/)[0]) + "')}"
+				}else{
+					return a
+				}
+			})
+			x = x.replace(/\\(?=\\)/g, "\\\\");
+			x = x.replace(/\\(?!\\)/g, "");
 			return x
 		}
 
@@ -142,6 +153,7 @@ var EGCode = {
 				//var
 				if (iSE(usemes.cmdName, "var")) {
 					if (kwdInd == 0) { //var
+						output+=" "
 						usemes.registerVar = "EGCode.registerVar('"
 					} else if (kwdInd == 1) { //varname
 						usemes.registerVar += EGCode.varMatch(kwd,"p")
@@ -194,8 +206,10 @@ var EGCode = {
 		if (type != "p") { //p = "pure"
 			x = x.replace(/,,/g, ", ")
 		}
-		if(type==undefined){x=x.match(/[A-z0-9_,]/g)}else{
-			x=x.match(/[A-z0-9_]/g)
+		if(type==undefined){
+			x=x.match(/[A-Za-z0-9_,]/g)
+		}else{
+			x=x.match(/[A-Za-z0-9_]/g)
 		}
 		if (x === null) return "_"
 		return x.join("").replace(/\[|\]/g, "")
@@ -209,10 +223,8 @@ var EGCode = {
 		ask: (x) => prompt(x),
 		n: (x) => x.split("").join("\\")
 	},
-	funs: { //test
-		imports: function(e){
-			
-		}
+	funs: {
+		
 	},
 	varsSoFar: {},
 	registerVar: (name, value) => {
@@ -260,6 +272,13 @@ var EGCode = {
 		}
 		for (var prop in o.funs) {
 			EGCode.funs[prop] = o.funs[prop]
+		}
+	},
+	getVar: name=>{
+		if(EGCode.varMatch(name) in EGCode.varsSoFar){
+			return EGCode.varsSoFar[EGCode.varMatch(name)]
+		}else{
+			return "$"+name
 		}
 	}
 }
