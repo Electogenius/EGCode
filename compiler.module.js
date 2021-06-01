@@ -180,6 +180,13 @@ var EGCode = {
 						output += rem() + ")"
 					}
 				}
+				if(EGCode.varMatch(usemes.cmdName)=="if"){
+					if(kwdInd==0){
+						output+="EGCode.if("
+					}else{
+						output+=EGCode.UVarToJS(kwd.slice(0,-2))+",function(){"
+					}
+				}
 				if (usemes.cmdName == "}") output += "})"
 				if (usemes.cmdName == "]") output += "}"
 				if (op == output && kwdInd == 1) {
@@ -280,6 +287,7 @@ var EGCode = {
 		}else{
 			return "$"+name
 		}
-	}
+	},
+	if: (condition,callback)=>{if(condition)callback()}
 }
 export default EGCode;

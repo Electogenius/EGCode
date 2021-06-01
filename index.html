@@ -23,10 +23,12 @@
 			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
-var name(ask( thy name? ))
-var greet do n{
-	
-}
+# var name(ask( thy name? ))
+# var greet do n{/
+	if([1 = 1]){
+		log(hi)
+	}
+#}
 `)
 try{eval(d)}catch(e){console.log(e)}
 			c.innerText = d
