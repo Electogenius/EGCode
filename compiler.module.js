@@ -180,13 +180,15 @@ var EGCode = {
 						output += rem() + ")"
 					}
 				}
+				//if
 				if(EGCode.varMatch(usemes.cmdName)=="if"){
 					if(kwdInd==0){
-						output+="EGCode.if("
+						output+="if("
 					}else{
-						output+=EGCode.UVarToJS(kwd.slice(0,-2))+",function(){"
+						output+=EGCode.UVarToJS(kwd.slice(0,-2))+"){"
 					}
 				}
+				//repeat
 				if (EGCode.varMatch(usemes.cmdName) == "repeat") {
 					if (kwdInd == 0) {
 						output += "EGCode.times("
@@ -195,11 +197,23 @@ var EGCode = {
 						output += EGCode.UVarToJS(kwd.slice(kwd.indexOf("_")+1,-2)) + ",function(e_"+paramname+"){EGCode.newParam('"+paramname+"',e_"+paramname+")"
 					}
 				}
+				//give (return)
 				if (iSE(usemes.cmdName, "give")) {
 					if (kwdInd == 0) {
 						output += "return("
 					} else if (kwdInd == 1) {
 						output += rem() + ")"
+					}
+				}
+				//else
+				if(iSE(usemes.cmdName, "]else[")){
+					output+="}else{"
+				}
+				if(iSE(usemes.cmdName,"]elseif")){
+					if(kwdInd==0){
+						output+="}else if("
+					}else{
+						output+=EGCode.UVarToJS(kwd.slice(0,-2))+"){"
 					}
 				}
 				if (usemes.cmdName == "}") output += "})"
@@ -302,7 +316,9 @@ var EGCode = {
 			return "$"+name
 		}
 	},
-	if: (condition,callback)=>{if(condition)callback()},
+	if: (...list)=>{
+		list.forEach(item=>{})
+	},
 	params: {},
 	newParam:(name,val)=>{
 		EGCode.params[name]=val

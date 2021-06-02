@@ -9,9 +9,10 @@
 		background-color: black
 	}
 	code{
-		font-family: menlo !important
+		font-family: menlo, monospace !important
 	}
 	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/2.4.1/eruda.min.js" referrerpolicy="no-referrer" onload='eruda.init()'></script>
 </head>
 
 <body>
@@ -19,21 +20,21 @@
 	<script type="module">
 		import EGCode from "/compiler.module.js"
 		window.EGCode = EGCode
-		if(window.location.href.startsWith("http://localhost:")){
+		if(window.location.href.startsWith("http://localhost:")||window.location.href.startsWith('https://00f')){
 			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
 var factorial do n{
-	if([$n ! 1]){
-		give([$n * factorial( $n )])
-	}else{
+	if([$n ! 1])[
+		give([$n * factorial( $n - 1 )])
+	]elseIf([1 = 1])[
 		give(1)
-	}
+	]
 }
-log([factorial( 1 )])
+log([factorial( 7 )])
 `)
 try{eval(d)}catch(e){console.log(e)}
-			c.innerText = d
+			c.innerHTML = d.replace('\n')
 		}else{
 			window.location="https://electogenius.github.io/electo/likes/ruining/EGCode"
 		}
