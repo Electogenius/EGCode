@@ -137,7 +137,6 @@ var EGCode = {
 			var op = output
 			for (var kwdInd in commandArr) {
 				var kwd = commandArr[kwdInd]
-
 				function rem() {
 					if (kwd.endsWith(")")) return EGCode.UVarToJS(kwd.slice(0, -1));
 					return EGCode.UVarToJS(kwd.slice(1))
@@ -165,7 +164,8 @@ var EGCode = {
 							usemes.registerVar += rem() + ")"
 						}
 					} else {
-						usemes.registerVar += EGCode.varMatch(kwd.slice(0, -1)) + "){" // e){
+						let paramname = EGCode.varMatch(kwd.slice(0, -1))
+						usemes.registerVar += EGCode.varMatch(kwd.slice(0, -1)) + "){EGCode.newParam('"+paramname+"',e_"+paramname+")" // e){
 					}
 					if (kwdInd == commandArr.length - 1) {
 						output += usemes.registerVar
@@ -185,6 +185,21 @@ var EGCode = {
 						output+="EGCode.if("
 					}else{
 						output+=EGCode.UVarToJS(kwd.slice(0,-2))+",function(){"
+					}
+				}
+				if (EGCode.varMatch(usemes.cmdName) == "repeat") {
+					if (kwdInd == 0) {
+						output += "EGCode.times("
+					} else {
+						let paramname = kwd.slice(0,EGCode.varMatch(kwd).indexOf("_"))
+						output += EGCode.UVarToJS(kwd.slice(kwd.indexOf("_")+1,-2)) + ",function(e_"+paramname+"){EGCode.newParam('"+paramname+"',e_"+paramname+")"
+					}
+				}
+				if (iSE(usemes.cmdName, "give")) {
+					if (kwdInd == 0) {
+						output += "return("
+					} else if (kwdInd == 1) {
+						output += rem() + ")"
 					}
 				}
 				if (usemes.cmdName == "}") output += "})"
@@ -221,7 +236,7 @@ var EGCode = {
 		if (x === null) return "_"
 		return x.join("").replace(/\[|\]/g, "")
 	},
-	mfuns: {
+	funs: {
 		uppercase: (x) => x.toUpperCase(),
 		lowercase: (x) => x.toLowerCase(),
 		stringize: (x) => String(x).split("").join("\\"), //not sure
@@ -229,9 +244,6 @@ var EGCode = {
 		sqrt: (x) => Math.sqrt(x),
 		ask: (x) => prompt(x),
 		n: (x) => x.split("").join("\\")
-	},
-	funs: {
-		
 	},
 	varsSoFar: {},
 	registerVar: (name, value) => {
@@ -262,8 +274,8 @@ var EGCode = {
 		//if (typeof EGCode.funs[name] == "string") try { eval(EGCode.funs[name]) } catch (e) {}
 	},
 	mfun: (fname, test) => {
-		if (fname in EGCode.mfuns) {
-			return EGCode.mfuns[fname](test)
+		if (fname in EGCode.funs) {
+			return EGCode.funs[fname](test)
 		} else {
 			return fname + "( " + test + " )"
 		}
@@ -274,8 +286,8 @@ var EGCode = {
 	library_link:"https://cdn.jsdelivr.net/gh/Electogenius/EGCode@main/eglib/",
 	cors: "https://api.allorigins.win/get?url=",
 	loadlib: o=>{
-		for (var prop in o.mfuns) {
-			EGCode.mfuns[prop]=o.mfuns[prop]
+		for (var prop in o.funs) {
+			EGCode.funs[prop]=o.funs[prop]
 		}
 		for (var prop in o.funs) {
 			EGCode.funs[prop] = o.funs[prop]
@@ -284,10 +296,21 @@ var EGCode = {
 	getVar: name=>{
 		if(EGCode.varMatch(name) in EGCode.varsSoFar){
 			return EGCode.varsSoFar[EGCode.varMatch(name)]
+		}else if(EGCode.varMatch(name) in EGCode.params){
+			return EGCode.params[EGCode.varMatch(name)]
 		}else{
 			return "$"+name
 		}
 	},
-	if: (condition,callback)=>{if(condition)callback()}
+	if: (condition,callback)=>{if(condition)callback()},
+	params: {},
+	newParam:(name,val)=>{
+		EGCode.params[name]=val
+	},
+	times: (times, callback)=>{
+		for (var index = 0; index < times; index++) {
+			callback(index)
+		}
+	}
 }
 export default EGCode;

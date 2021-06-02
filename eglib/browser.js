@@ -4,7 +4,7 @@ return {
 	"funs":{
 		"alert": e=>window.alert(e),
 	},
-	"mfuns": {
+	"funs": {
 		ask: e=>window.prompt(e),
 	}
 }

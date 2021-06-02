@@ -1,0 +1,17 @@
+the actual fibonacci function
+var fibonacci do n{
+  var num1()
+  var num2 1
+  var sum()
+  repeat(i_[$n]){
+   set sum([$num1 + $num2])
+   set num1([$num2])
+   set num2([$sum])
+  }
+  give([$num2])
+}
+
+logs the first 20 fibonacci numbers
+repeat(n_20){
+	log([fibonacci($n\) is \ fibonacci( $n )])
+}
