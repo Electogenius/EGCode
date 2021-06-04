@@ -1,4 +1,5 @@
 var EGCode = {
+	version: 0.9,
 	compileToJS: function(code) {
 		if (typeof(code) !== "string") {
 			throw ("JavaScript input must be of type string. Invalid code ", code)
@@ -257,7 +258,10 @@ var EGCode = {
 		lengthof: (x) => String(x).length,
 		sqrt: (x) => Math.sqrt(x),
 		ask: (x) => prompt(x),
-		n: (x) => x.split("").join("\\")
+		n: (x) => x.split("").join("\\"),
+		_log: (x)=>Math.log(x),
+		rand: (x)=>Math.round(Math.random()*x),
+		run: (x)=>new Function(EGCode.compileToJS(x)).call()
 	},
 	varsSoFar: {},
 	registerVar: (name, value) => {
