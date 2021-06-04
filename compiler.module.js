@@ -23,7 +23,7 @@ var EGCode = {
 				array.forEach(keyword => {
 					//filter out the type of the keyword
 					if (Number.isNaN(Number(keyword))) { //non-numbers
-						if ((/(\+|\-|\*|\/|\&|\||\<|\>|\=|\!)/).test(keyword) && previousType != "operator" && keyword.length == 1) { //math operators
+						if ((/(\+|\-|\*|\/|\&|\||\<|\>|\=|\!|\%)/).test(keyword) && previousType != "operator" && keyword.length == 1) { //math operators
 							if (keyword != "!") { result += keyword } else { keyword += "=" }
 							if (/[\&\|\=]/.test(keyword)) result += keyword;
 							
