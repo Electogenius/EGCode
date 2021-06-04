@@ -217,6 +217,15 @@ var EGCode = {
 						output+=EGCode.UVarToJS(kwd.slice(0,-2))+"){"
 					}
 				}
+				//a better "set variable"
+				if(usemes.cmdName.startsWith("$") && commandArr[1] == " ="){
+					if (kwdInd == 0) {
+						output += "EGCode.setVar('" + EGCode.varMatch(kwd) + "', "
+					} else if (kwdInd == 2) {
+						output += rem() + ")"
+					}
+				}
+				
 				if (usemes.cmdName == "}") output += "})"
 				if (usemes.cmdName == "]") output += "}"
 				if (op == output && kwdInd == 1) {
