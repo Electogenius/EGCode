@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<script type="module" charset="utf-8">
+		import EGCode from "./compiler.module.js"
+    	window.EGCode = EGCode
+  </script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js" integrity="sha512-ZTpbCvmiv7Zt4rK0ltotRJVRaSBKFQHQTrwfs6DoYlBYzO1MA6Oz2WguC+LkV8pGiHraYLEpo7Paa+hoVbCfKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.css" integrity="sha512-xIf9AdJauwKIVtrVRZ0i4nHP61Ogx9fSRAkCLecmE2dL/U8ioWpDvFCAy4dcfecN72HHB9+7FfQj3aiO68aaaw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/theme/nord.min.css" integrity="sha512-sPc4jmw78pt6HyMiyrEt3QgURcNRk091l3dZ9M309x4wM2QwnCI7bUtsLnnWXqwBMECE5YZTqV6qCDwmC2FMVA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/addon/edit/closebrackets.min.js" integrity="sha512-cCnOU69ESswPmMV3f9TR7WgctoJZliqGbJ8WeLn0VlUrngSsmtVopRf6OG/epbURGfNmY4RY6RzZ/mWkPQ/onw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/addon/hint/show-hint.min.js" integrity="sha512-vmnoZMgVSaDE+VzynH2agDhizzixaoa27PqRWpqYXn4XOG/qxB/AFZOaRT/GIUbmVE1Fc/T1HGNiy/whbPz8uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/addon/hint/show-hint.min.css" integrity="sha512-OmcLQEy8iGiD7PSm85s06dnR7G7C9C0VqahIPAj/KHk5RpOCmnC6R2ob1oK4/uwYhWa9BF1GC6tzxsC8TIx7Jg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js" integrity="sha512-1iwOtzgGTn5KiNhyTHdGh8IpixXZnsD0vRXUqNUgWqET4Uv3vDXuHq55cGjdJ+qNBL/HxH815N7qvLxgzA1dYw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<style type="text/css" media="all">
+		body {
+			background-color: black;
+			color: white;
+			font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif
+		}
+
+		#ov {
+			position: absolute;
+			z-index: 2;
+			padding-left: 33px;
+			/*background-color: black;*/
+			font-family: monospace;
+			padding-top: 4px;
+			margin: 0;
+		}
+
+		div.CodeMirror-code[contenteditable="true"][role="presentation"] > div {
+			opacity: 1;
+			color: rgba(0, 0, 0, 0);
+		}
+
+		.function {
+			color: #28e
+		}
+		.basic-string {
+			color: #af3
+		}
+		.basic-number {
+			color: #faa
+		}
+		.math {
+			color: #d55
+		}
+		.bracket{
+			color: gray;
+		}
+	</style>
+</head>
+
+<body>
+	<pre id="ov"></pre>
+	<div id="cm"></div>
+	<script type="text/javascript" charset="utf-8">
+		Rainbow.extend("egcode", [
+	{
+		name: "function",
+		pattern: /^[\t ]*((?=\])|)[^\(\n ]+((?=\(.*\))|(?= ))/gm
+	},
+	{
+		name: "math",
+		pattern: /\(\[.*\]\)(?=$|\{|\[$)/gm
+	},
+	{
+		name: "basic-number",
+		pattern: /(\(\d*\)(?=$|\{|\[$))/gm
+	},
+	{
+		name: "basic-string",
+		pattern: /(\([^\[]?.*[^\]]?\)(?=$|\{|\[$))/gm
+	},
+	{
+		name: "bracket",
+		pattern: /(\{$|^[\t ]*\}|\[$|^[\t ]*\])/gm,
+	}
+	])
+		var cm = new CodeMirror(document.getElementById("cm"), {
+			value: "if([hello])[\n	(2)\n]",
+			theme: "nord",
+			lineNumbers: true,
+			autoCloseBrackets: true,
+			mode: "EGCode",
+			fontSize: 20
+		})
+		cm.showHint(["log"])
+		cm.on("change", function(c) {
+			highlight()
+		})
+		function highlight(){
+			Rainbow.color(cm.getValue(), "egcode", function(code) {
+			document.getElementById("ov").innerHTML = code.replace(/\n/g, "<br>").replace(/\t/g, "    ")
+			//console.log(code)
+			})
+		}
+		highlight()
+	</script>
+</body>
+
+</html>
