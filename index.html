@@ -24,14 +24,10 @@
 			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
-var factorial do n{
-	if([$n ! 1])[
-		give([$n * factorial( $n - 1 )])
-	]elseIf([1 = 1])[
-		give(1)
-	]
-}
-log([factorial( 7 )])
+
+ifnt([1 ) = ( 0])[
+log(h)
+]
 `)
 try{eval(d)}catch(e){console.log(e)}
 			c.innerHTML = d.replace('\n')

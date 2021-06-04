@@ -6,7 +6,7 @@ No data types (kind of)
 
 Because who needs "" and '', am I right
 
-**version: 0.9.0**
+**version: 0.9.2**
 
 ```EGCode
 print(hello world)

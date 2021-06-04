@@ -1,0 +1,10 @@
+var factorial do n{
+	if([$n ! 1])[
+		give([$n * factorial( $n - 1 )])
+	]else[
+		give(1)
+	]
+}
+
+prints the factorial of five
+log([factorial( 5 )])

@@ -1,5 +1,5 @@
 var EGCode = {
-	version: 0.9,
+	version: 0.92,
 	compileToJS: function(code) {
 		if (typeof(code) !== "string") {
 			throw ("JavaScript input must be of type string. Invalid code ", code)
@@ -189,6 +189,14 @@ var EGCode = {
 						output+=EGCode.UVarToJS(kwd.slice(0,-2))+"){"
 					}
 				}
+				//"ifn't"
+				if (EGCode.varMatch(usemes.cmdName) == "ifnt") {
+					if (kwdInd == 0) {
+						output += "if(!("
+					} else {
+						output += EGCode.UVarToJS(kwd.slice(0, -2)) + ")){"
+					}
+				}
 				//repeat
 				if (EGCode.varMatch(usemes.cmdName) == "repeat") {
 					if (kwdInd == 0) {
@@ -210,11 +218,20 @@ var EGCode = {
 				if(iSE(usemes.cmdName, "]else[")){
 					output+="}else{"
 				}
+				//else if
 				if(iSE(usemes.cmdName,"]elseif")){
 					if(kwdInd==0){
 						output+="}else if("
 					}else{
 						output+=EGCode.UVarToJS(kwd.slice(0,-2))+"){"
+					}
+				}
+				//else ifn't
+				if (iSE(usemes.cmdName, "]elseifnt")) {
+					if (kwdInd == 0) {
+						output += "}else if(!("
+					} else {
+						output += EGCode.UVarToJS(kwd.slice(0, -2)) + ")){"
 					}
 				}
 				//a better "set variable"
