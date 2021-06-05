@@ -24,9 +24,8 @@
 			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
-
 ifnt([1 ) = ( 0])[
-log(h)
+log([eval( [1 +\\ 2] )])
 ]
 `)
 try{eval(d)}catch(e){console.log(e)}

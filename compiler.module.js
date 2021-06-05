@@ -7,6 +7,7 @@ var EGCode = {
 		//UVar -> js
 		EGCode.UVarToJS = function(uvar) {
 			if (uvar == "") return "0"
+			if(typeof uvar == 'number')return String(uvar)
 			let x = uvar
 			var isNumber = false
 			//x = x.slice(0, x.length - 1)
@@ -76,7 +77,7 @@ var EGCode = {
 			} else {
 				//x = x.replace(/`/g, "\\")
 			}
-			x = x.replace(/\$[^\\`]+/g, function(a, b, c) {
+			x = x.replace(/\$[^\\`]+/g, function(a, b, c) {//`
 				if(typeof EGCode.varsSoFar[a] !== "number"){
 					return "\${EGCode.getVar('" + EGCode.varMatch(a.split(/\\/)[0]) + "')}"
 				}else{
@@ -287,7 +288,8 @@ var EGCode = {
 		n: (x) => x.split("").join("\\"),
 		_log: (x)=>Math.log(x),
 		rand: (x)=>Math.round(Math.random()*x),
-		run: (x)=>new Function(EGCode.compileToJS(x)).call()
+		run: (x)=>new Function(EGCode.compileToJS(String(x))).call(),
+		eval: (x)=>new Function('return '+EGCode.UVarToJS(x)).call(),
 	},
 	varsSoFar: {},
 	registerVar: (name, value) => {
