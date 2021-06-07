@@ -278,32 +278,46 @@ var EGCode = {
 		if (x === null) return "_"
 		return x.join("").replace(/\[|\]/g, "")
 	},
-	funs: {
+	funs: {},
+	stdFuns:{
 		uppercase: (x) => x.toUpperCase(),
 		lowercase: (x) => x.toLowerCase(),
 		stringize: (x) => String(x).split("").join("\\"), //not sure
 		lengthof: (x) => String(x).length,
 		sqrt: (x) => Math.sqrt(x),
 		ask: (x) => prompt(x),
-		n: (x) => x.split("").join("\\"),
+		n: (x)=>x.split("").join("\\"),
 		_log: (x)=>Math.log(x),
 		rand: (x)=>Math.round(Math.random()*x),
 		run: (x)=>new Function(EGCode.compileToJS(String(x))).call(),
 		eval: (x)=>new Function('return '+EGCode.UVarToJS(x)).call(),
+		sin: (x)=>Math.sin(x),
+		cos: (x)=>Math.cos(x),
 	},
 	varsSoFar: {},
-	registerVar: (name, value) => {
-		if (typeof value == "function") EGCode.funs[name] = value;
-		else EGCode.varsSoFar[name] = value
+	stdVars:{
+		
 	},
-	setVar: (name, value) => {
-		if (name in EGCode.varsSoFar) {
-			EGCode.varsSoFar[name] = value
-		}else if((name.slice(0,name.lastIndexOf("."))) in EGCode.varsSoFar){
-			EGCode.varsSoFar[name] = value
+	registerVar: (name, value) => {
+		if (typeof value == "function"){
+			if(!(name in EGCode.funs))EGCode.funs[name] = value;
+		}else{
+			if(!(name in EGCode.varsSoFar))EGCode.varsSoFar[name] = value
 		}
 	},
-	resetVals: e => EGCode.varsSoFar = {},
+	setVar: (name, value) => {
+		if(!name.startsWith("_")){
+			if (name in EGCode.varsSoFar) {
+				EGCode.varsSoFar[name] = value
+			}else if((name.slice(0,name.lastIndexOf("."))) in EGCode.varsSoFar){
+				EGCode.varsSoFar[name] = value
+			}
+		}
+	},
+	resetVals: e =>{
+		EGCode.varsSoFar = EGCode.stdVars
+		EGCode.funs = EGCode.stdFuns
+	},
 	callFunction: (name, param) => {
 		if(!name.startsWith("with_")){
 			if (typeof EGCode.funs[name] == "function") {
@@ -350,9 +364,6 @@ var EGCode = {
 			return "$"+name
 		}
 	},
-	if: (...list)=>{
-		list.forEach(item=>{})
-	},
 	params: {},
 	newParam:(name,val)=>{
 		EGCode.params[name]=val
@@ -360,6 +371,17 @@ var EGCode = {
 	times: (times, callback)=>{
 		for (var index = 0; index < times; index++) {
 			callback(index)
+		}
+	},
+	arr: function(text){
+		let numArr=true
+		text.split("_").forEach(e=>{
+			if(Number.isNaN(Number(e)))numArr=false
+		})
+		if(numArr){
+			return text.split("_")
+		}else{
+			return text.split(",,")
 		}
 	}
 }

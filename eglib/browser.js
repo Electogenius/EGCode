@@ -2,9 +2,7 @@
 return {
 	"name": "browser",
 	"funs":{
-		"alert": e=>window.alert(e),
-	},
-	"funs": {
-		ask: e=>window.prompt(e),
+		alert: e=>alert(e),
+		ask: e=>prompt(e),
 	}
 }
