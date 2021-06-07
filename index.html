@@ -24,9 +24,10 @@
 			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
-ifnt([1 ) = ( 0])[
-log([eval( [1 +\\ 2] )])
-]
+var window({})
+$window.location = {}
+$window.location.href = https://youtu.be/dQw4w9WgXcQ
+log([$window.location.href])
 `)
 try{eval(d)}catch(e){console.log(e)}
 			c.innerHTML = d.replace('\n')

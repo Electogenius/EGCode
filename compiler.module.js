@@ -271,7 +271,7 @@ var EGCode = {
 			x = x.replace(/,,/g, ", ")
 		}
 		if(type==undefined){
-			x=x.match(/[A-Za-z0-9_,]/g)
+			x=x.match(/[A-Za-z0-9_\.]/g)
 		}else{
 			x=x.match(/[A-Za-z0-9_]/g)
 		}
@@ -298,6 +298,8 @@ var EGCode = {
 	},
 	setVar: (name, value) => {
 		if (name in EGCode.varsSoFar) {
+			EGCode.varsSoFar[name] = value
+		}else if((name.slice(0,name.lastIndexOf("."))) in EGCode.varsSoFar){
 			EGCode.varsSoFar[name] = value
 		}
 	},
