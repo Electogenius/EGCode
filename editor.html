@@ -105,20 +105,20 @@
 			})
 		} catch (e) { console.log(e) }
 		console.log(sn)
-		cm.on("change", function(c) {
+		cm.on("change", function(c,change) {
 			highlight()
 			let invalid = false;
-			["{","}","(",")"].forEach(item=>{
+			["{","}","(",")","[","]"].forEach(item=>{
 				if(cm.getLine(cm.getCursor().line).trim().slice(0, cm.getCursor().ch).endsWith(item))invalid=true
 			})
-			if(!invalid){
+			if(!invalid && change.origin!="+delete"){
 			try {
 				CodeMirror.showHint(cm, (a, b) => {
 					let e = {}
-					e.from = (cm.getCursor())
-					e.to = e.from
-					e.to.ch += cm.getLine(cm.getCursor().line).trim().slice(0, cm.getCursor().ch).length
-					console.log(e.to.ch)
+					e.to = (cm.getCursor())
+					e.from = e.to
+					e.from.ch-=cm.getLine(cm.getCursor().line).trim().slice(0,cm.getCursor().ch).length
+					console.log(e.from)
 					//console.log(cm.getLine(cm.getCursor().line).trim().slice(0,cm.getCursor().ch))
 					e.list = sn.list.filter(it => {
 						let t = cm.getLine(cm.getCursor().line).trim().slice(0, cm.getCursor().ch)

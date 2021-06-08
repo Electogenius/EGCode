@@ -24,7 +24,10 @@
 			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
-log([])
+var n1([ask( number #1 )])
+var operator([ask( operator )])
+var n2([ask( number #2 )])
+log([eval( $n1 +  + $operator\\ +  + $n2 )])
 `)
 try{eval(d)}catch(e){console.log(e)}
 			c.innerHTML = d.replace('\n')

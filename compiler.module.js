@@ -293,10 +293,16 @@ var EGCode = {
 		eval: (x)=>new Function('return '+EGCode.UVarToJS(x)).call(),
 		sin: (x)=>Math.sin(x),
 		cos: (x)=>Math.cos(x),
+		max: (x)=>Math.max(EGCode.arr(x)[0],EGCode.arr(x)[1]),
+		min: (x)=>Math.min(EGCode.arr(x)[0],EGCode.arr(x)[1]),
+		not: (x)=>(x)?0:1,
+		b64e: (x)=>btoa(x),
+		b64d: (x)=>atob(x),
 	},
 	varsSoFar: {},
 	stdVars:{
-		
+		_pi: Math.PI,
+		_e: Math.E,
 	},
 	registerVar: (name, value) => {
 		if (typeof value == "function"){
