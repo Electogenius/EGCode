@@ -1,0 +1,14 @@
+var fizzbuzz do index{
+	if([$index % 15 = 0])[
+		log(FizzBuzz)
+	]elseif([$index % 5 = 0])[
+		log(Buzz)
+	]elseif([$index % 3 = 0])[
+		log(Fizz)
+	]else[
+		log([$index])
+	]
+}
+repeat(n_100){
+	fizzbuzz([$n + 1])
+}

@@ -1,21 +1,18 @@
 var EGCode = {
 	version: 0.92,
-	compileToJS: function(code) {
-		if (typeof(code) !== "string") {
-			throw ("JavaScript input must be of type string. Invalid code ", code)
-		}
 		//UVar -> js
-		EGCode.UVarToJS = function(uvar) {
+	UVarToJS: function(uvar) {
 			if (uvar == "") return "0"
-			if(typeof uvar == 'number')return String(uvar)
+			if (typeof uvar == 'number') return String(uvar)
 			let x = uvar
-			var isNumber = false
+			var isNumber = false,isMath = false
 			//x = x.slice(0, x.length - 1)
 			//check type:
 			if (!Number.isNaN(Number(x))) { //number
 				isNumber = true
 			} else if (x[0] == "[" && x[x.length - 1] == "]") { //math
 				isNumber = true
+				
 				x = x.slice(1, -1)
 				//verboser rewrite because I didn't understand any part of what I coded like 3 months ago
 				var array = x.split(" ")
@@ -28,35 +25,32 @@ var EGCode = {
 						if ((/(\+|\-|\*|\/|\&|\||\<|\>|\=|\!|\%)/).test(keyword) && previousType != "operator" && keyword.length == 1) { //math operators
 							if (keyword != "!") { result += keyword } else { keyword += "=" }
 							if (/[\&\|\=]/.test(keyword)) result += keyword;
-							
 							previousType = "operator"
-						}else if (keyword == "(" || keyword == ")") { //brackets
+						} else if (keyword == "(" || keyword == ")") { //brackets
 							//fit into previous type:
-							if(previousType == "string"&&keyword=="(")result += "+"
+							if (previousType == "string" && keyword == "(") result += "+"
 							result += keyword
-							
 							previousType = "bracket"
 						} else { //strings||functions
-							if (keyword.endsWith("(") && (keyword == EGCode.varMatch(keyword,"p") + "(")) { //functions
-								result += "EGCode.mfun('" + EGCode.varMatch(keyword,"p") + "', "
+							if (keyword.endsWith("(") && (keyword == EGCode.varMatch(keyword, "p") + "(")) { //functions
+								result += "EGCode.mfun('" + EGCode.varMatch(keyword, "p") + "', "
 								//fit into previous type:
-								if(previousKeyword == ")"||previousType=="string"||previousType=="number")keyword+="+"
-								
+								if (previousKeyword == ")" || previousType == "string" || previousType == "number") keyword += "+"
 								previousType = "mfun"
-							} else if((!keyword.startsWith("$"))||EGCode.varMatch(keyword)!==keyword.slice(1)){ //strings
+							} else if ((!keyword.startsWith("$")) || EGCode.varMatch(keyword) !== keyword.slice(1)) { //strings
 								if (previousType == "string") result = result.slice(0, -1)
 								if (previousType == "bracket" && previousKeyword == ")") result += "+"
 								if (previousType == "number") result += "+"
 								result += ((previousType == "string") ? " " : (previousType == "number") ? "` " : "`") + keyword + "`"
 								previousType = "string"
-							}else{
-								result += "EGCode.getVar('"+keyword.slice(1)+"')"
+							} else {
+								result += "EGCode.getVar('" + keyword.slice(1) + "')"
 							}
 						}
 					} else { //numbers
 						if (previousType == "string") {
-							result=result.slice(0,-1)
-							result += " "+keyword+"`"
+							result = result.slice(0, -1)
+							result += " " + keyword + "`"
 							previousType = "string"
 							//console.log(previousKeyword)
 						} else {
@@ -71,24 +65,29 @@ var EGCode = {
 			}
 			if (!isNumber) {
 				//x = x.replace(/\\\\/g, "༷") 
-				
 				x = x.replace(/`/g, "\\`")
 				x = "`" + x + "`"
 			} else {
 				//x = x.replace(/`/g, "\\")
 			}
-			x = x.replace(/\$[^\\`]+/g, function(a, b, c) {//`
-				if(typeof EGCode.varsSoFar[a] !== "number"){
-					return "\${EGCode.getVar('" + EGCode.varMatch(a.split(/\\/)[0]) + "')}"
-				}else{
+			//variable replacing
+			if(isMath){
+			x = x.replace(/\$[^\\`]+/g, function(a, b, c) { //`
+				if (typeof EGCode.varsSoFar[a] !== "number") {
+					return "${EGCode.getVar('" + EGCode.varMatch(a.split(/\\/)[0]) + "')}"
+				} else {
 					return a
 				}
 			})
+			}
 			x = x.replace(/\\(?=\\)/g, "\\\\");
 			x = x.replace(/\\(?!\\)/g, "");
 			return x
+		},
+	compileToJS: function(code) {
+		if (typeof(code) !== "string") {
+			throw ("JavaScript input must be of type string. Invalid code ", code)
 		}
-
 		function iSE(a, b) { //case insensitive ===
 			return a.toLowerCase() === b.toLowerCase()
 		}
@@ -105,20 +104,31 @@ var EGCode = {
 			var comCharArr = command.split("")
 			for (var charInd in comCharArr) {
 				var currentChar = comCharArr[charInd]
-				if (currentChar == "(" && usemes.isInUVal !== true) {
-					usemes.isInUVal = true
-					kwArr.push("")
-				} else {
-					if (currentChar == " " && usemes.isInUVal !== true) {
+				if (!usemes.isInMLUVar) {
+					if (currentChar == "(" && usemes.isInUVal !== true) {
+						usemes.isInUVal = true
 						kwArr.push("")
+					} else if (currentChar == "`" && !usemes.isInUVal) {
+						usemes.isInUVal = true
+						usemes.isInMLUVar = true
+						kwArr.push(comCharArr[charInd])// how
+					} else {
+						if (currentChar == " " && usemes.isInUVal !== true) {
+							kwArr.push("")
+						}
+						//kwArr[kwArr.length - 1] += currentChar
+						kwArr[kwArr.length - 1] += currentChar
 					}
-					//kwArr[kwArr.length - 1] += currentChar
-					kwArr[kwArr.length - 1] += currentChar
+				}else{
+					if(currentChar=="`"&&charInd==0){usemes.isInMLUVar=false;kwArr[kwArr.length-1]=kwArr[kwArr.length-1].slice(0,-1)}else{
+					kwArr[kwArr.length - 1] += currentChar;}
 				}
+				
 			}
-			usemes.isInUVal = 0
-			kwArr.push(';')
-			kwArr.push("")
+			//console.log(kwArr)
+			if(!usemes.isInMLUVar)usemes.isInUVal = 0
+			if(!usemes.isInMLUVar){kwArr.push(';')
+			kwArr.push("")}else{kwArr[kwArr.length-1]+="\n"}
 		}
 		//parse -> better parse
 		var arrr = [[]] //list of arrays of keywords in commands
@@ -154,10 +164,10 @@ var EGCode = {
 				//var
 				if (iSE(usemes.cmdName, "var")) {
 					if (kwdInd == 0) { //var
-						output+=" "
+						output += " "
 						usemes.registerVar = "EGCode.registerVar('"
 					} else if (kwdInd == 1) { //varname
-						usemes.registerVar += EGCode.varMatch(kwd,"p")
+						usemes.registerVar += EGCode.varMatch(kwd, "p")
 					} else if (kwdInd == 2) { // = value
 						usemes.registerVar += "', "
 						if (iSE(kwd, " do")) { // = function(
@@ -167,7 +177,7 @@ var EGCode = {
 						}
 					} else {
 						let paramname = EGCode.varMatch(kwd.slice(0, -1))
-						usemes.registerVar += EGCode.varMatch(kwd.slice(0, -1)) + "){EGCode.newParam('"+paramname+"',e_"+paramname+")" // e){
+						usemes.registerVar += EGCode.varMatch(kwd.slice(0, -1)) + "){EGCode.newParam('" + paramname + "',e_" + paramname + ")" // e){
 					}
 					if (kwdInd == commandArr.length - 1) {
 						output += usemes.registerVar
@@ -183,11 +193,11 @@ var EGCode = {
 					}
 				}
 				//if
-				if(EGCode.varMatch(usemes.cmdName)=="if"){
-					if(kwdInd==0){
-						output+="if("
-					}else{
-						output+=EGCode.UVarToJS(kwd.slice(0,-2))+"){"
+				if (EGCode.varMatch(usemes.cmdName) == "if") {
+					if (kwdInd == 0) {
+						output += "if("
+					} else {
+						output += EGCode.UVarToJS(kwd.slice(0, -2)) + "){"
 					}
 				}
 				//"ifn't"
@@ -203,8 +213,17 @@ var EGCode = {
 					if (kwdInd == 0) {
 						output += "EGCode.times("
 					} else {
-						let paramname = kwd.slice(0,EGCode.varMatch(kwd).indexOf("_"))
-						output += EGCode.UVarToJS(kwd.slice(kwd.indexOf("_")+1,-2)) + ",function(e_"+paramname+"){EGCode.newParam('"+paramname+"',e_"+paramname+")"
+						let paramname = kwd.slice(0, EGCode.varMatch(kwd).indexOf("_"))
+						output += EGCode.UVarToJS(kwd.slice(kwd.indexOf("_") + 1, -2)) + ",function(e_" + paramname + "){EGCode.newParam('" + paramname + "',e_" + paramname + ")"
+					}
+				}
+				//after (wait)
+				if (EGCode.varMatch(usemes.cmdName) == "after") {
+					if (kwdInd == 0) {
+						output += "EGCode.wait("
+					} else if (kwdInd == 1) {
+						output += EGCode.UVarToJS(kwd.slice(0, -2)) + ", function(){"
+
 					}
 				}
 				//give (return)
@@ -216,15 +235,15 @@ var EGCode = {
 					}
 				}
 				//else
-				if(iSE(usemes.cmdName, "]else[")){
-					output+="}else{"
+				if (iSE(usemes.cmdName, "]else[")) {
+					output += "}else{"
 				}
 				//else if
-				if(iSE(usemes.cmdName,"]elseif")){
-					if(kwdInd==0){
-						output+="}else if("
-					}else{
-						output+=EGCode.UVarToJS(kwd.slice(0,-2))+"){"
+				if (iSE(usemes.cmdName, "]elseif")) {
+					if (kwdInd == 0) {
+						output += "}else if("
+					} else {
+						output += EGCode.UVarToJS(kwd.slice(0, -2)) + "){"
 					}
 				}
 				//else ifn't
@@ -236,22 +255,28 @@ var EGCode = {
 					}
 				}
 				//a better "set variable"
-				if(usemes.cmdName.startsWith("$") && commandArr[1] == " ="){
+				if (usemes.cmdName.startsWith("$") && commandArr[1] == " =") {
 					if (kwdInd == 0) {
 						output += "EGCode.setVar('" + EGCode.varMatch(kwd) + "', "
 					} else if (kwdInd == 2) {
 						output += rem() + ")"
 					}
 				}
-				
-				if (usemes.cmdName == "}") output += "})"
-				if (usemes.cmdName == "]") output += "}"
+				//multiline variables and brackets
+				if (kwdInd == 0) {
+					if (usemes.cmdName == "no{") output += "/*"
+					if (usemes.cmdName == "}no") output += "*/"
+					if (usemes.cmdName == "{") output += "({"
+					if (usemes.cmdName == "[") output += "{"
+					if (usemes.cmdName == "}") output += "})"
+					if (usemes.cmdName == "]") output += "}"
+				}
 				if (op == output && kwdInd == 1) {
 					if (typeof EGCode.funs[usemes.cmdName] == "string") {
 						new Function(EGCode.funs[usemes.cmdName]).call()
 					} else {
-						if(!commandArr[commandArr.length-1].endsWith("{")){output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName,"p") + "', " + rem() + ")\n"}else{
-							output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName,"p") + "', function(e_" + EGCode.varMatch(kwd.slice(0, -1)) + "){"
+						if (!commandArr[commandArr.length - 1].endsWith("{")) { output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName, "p") + "', " + rem() + ")\n" } else {
+							output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName, "p") + "', function(e_" + EGCode.varMatch(kwd.slice(0, -1)) + "){"
 						}
 					}
 				}
@@ -270,69 +295,69 @@ var EGCode = {
 		if (type != "p") { //p = "pure"
 			x = x.replace(/,,/g, ", ")
 		}
-		if(type==undefined){
-			x=x.match(/[A-Za-z0-9_\.]/g)
-		}else{
-			x=x.match(/[A-Za-z0-9_]/g)
+		if (type == undefined) {
+			x = x.match(/[A-Za-z0-9_\.]/g)
+		} else {
+			x = x.match(/[A-Za-z0-9_]/g)
 		}
 		if (x === null) return "_"
 		return x.join("").replace(/\[|\]/g, "")
 	},
 	funs: {},
-	stdFuns:{
+	stdFuns: {
 		uppercase: (x) => x.toUpperCase(),
 		lowercase: (x) => x.toLowerCase(),
 		stringize: (x) => String(x).split("").join("\\"), //not sure
 		lengthof: (x) => String(x).length,
 		sqrt: (x) => Math.sqrt(x),
 		ask: (x) => prompt(x),
-		n: (x)=>x.split("").join("\\"),
-		_log: (x)=>Math.log(x),
-		rand: (x)=>Math.round(Math.random()*x),
-		run: (x)=>new Function(EGCode.compileToJS(String(x))).call(),
-		eval: (x)=>new Function('return '+EGCode.UVarToJS(x)).call(),
-		sin: (x)=>Math.sin(x),
-		cos: (x)=>Math.cos(x),
-		max: (x)=>Math.max(EGCode.arr(x)[0],EGCode.arr(x)[1]),
-		min: (x)=>Math.min(EGCode.arr(x)[0],EGCode.arr(x)[1]),
-		not: (x)=>(x)?0:1,
-		b64e: (x)=>btoa(x),
-		b64d: (x)=>atob(x),
+		n: (x) => x.split("").join("\\"),
+		_log: (x) => Math.log(x),
+		rand: (x) => Math.round(Math.random() * x),
+		run: (x) => new Function(EGCode.compileToJS(String(x))).call(),
+		eval: (x) => new Function('return ' + EGCode.UVarToJS(x)).call(),
+		sin: (x) => Math.sin(x),
+		cos: (x) => Math.cos(x),
+		max: (x) => Math.max(EGCode.arr(x)[0], EGCode.arr(x)[1]),
+		min: (x) => Math.min(EGCode.arr(x)[0], EGCode.arr(x)[1]),
+		not: (x) => (x) ? 0 : 1,
+		b64e: (x) => btoa(x),
+		b64d: (x) => atob(x),
 	},
 	varsSoFar: {},
-	stdVars:{
+	stdVars: {
 		_pi: Math.PI,
 		_e: Math.E,
 	},
 	registerVar: (name, value) => {
-		if (typeof value == "function"){
-			if(!(name in EGCode.funs))EGCode.funs[name] = value;
-		}else{
-			if(!(name in EGCode.varsSoFar))EGCode.varsSoFar[name] = value
+		if (typeof value == "function") {
+			if (!(name in EGCode.funs)) EGCode.funs[name] = value;
+		} else {
+			if (!(name in EGCode.varsSoFar)) EGCode.varsSoFar[name] = value
 		}
 	},
 	setVar: (name, value) => {
-		if(!name.startsWith("_")){
+		if (!name.startsWith("_")) {
 			if (name in EGCode.varsSoFar) {
 				EGCode.varsSoFar[name] = value
-			}else if((name.slice(0,name.lastIndexOf("."))) in EGCode.varsSoFar){
+			} else if ((name.slice(0, name.lastIndexOf("."))) in EGCode.varsSoFar) {
 				EGCode.varsSoFar[name] = value
 			}
 		}
 	},
-	resetVals: e =>{
+	resetVals: e => {
 		EGCode.varsSoFar = EGCode.stdVars
 		EGCode.funs = EGCode.stdFuns
 	},
 	callFunction: (name, param) => {
-		if(!name.startsWith("with_")){
+		if (!name.startsWith("with_")) {
 			if (typeof EGCode.funs[name] == "function") {
 				EGCode.funs[name](param)
 			}
-		}else{
-			if(typeof param == "function"){
-				name.split("_").slice(1).forEach(lib=>{
-					EGCode.import(lib).then((res)=>{
+		} else {
+			if (typeof param == "function") {
+				name.split("_").slice(1).forEach(lib => {
+					EGCode.import(lib).then((res) => {
 						EGCode.loadlib(new Function(res.contents).call())
 						param.call()
 					})
@@ -348,47 +373,53 @@ var EGCode = {
 			return fname + "( " + test + " )"
 		}
 	},
-	import: (lib)=>{
-		return fetch(EGCode.cors+EGCode.library_link+lib+".js").then(e=>{if(e.ok){return e.json()}else{throw("error fetching file")}})
+	import: (lib) => {
+		return fetch(EGCode.cors + EGCode.library_link + lib + ".js").then(e => { if (e.ok) { return e.json() } else { throw ("error fetching file") } })
 	},
-	library_link:"https://cdn.jsdelivr.net/gh/Electogenius/EGCode@main/eglib/",
+	library_link: "https://cdn.jsdelivr.net/gh/Electogenius/EGCode@main/eglib/",
 	cors: "https://api.allorigins.win/get?url=",
-	loadlib: o=>{
+	loadlib: o => {
 		for (var prop in o.funs) {
-			EGCode.funs[prop]=o.funs[prop]
+			EGCode.funs[prop] = o.funs[prop]
 		}
 		for (var prop in o.funs) {
 			EGCode.funs[prop] = o.funs[prop]
 		}
 	},
-	getVar: name=>{
-		if(EGCode.varMatch(name) in EGCode.varsSoFar){
+	getVar: name => {
+		if (EGCode.varMatch(name) in EGCode.varsSoFar) {
 			return EGCode.varsSoFar[EGCode.varMatch(name)]
-		}else if(EGCode.varMatch(name) in EGCode.params){
+		} else if (EGCode.varMatch(name) in EGCode.params) {
 			return EGCode.params[EGCode.varMatch(name)]
-		}else{
-			return "$"+name
+		} else {
+			return "$" + name
 		}
 	},
 	params: {},
-	newParam:(name,val)=>{
-		EGCode.params[name]=val
+	newParam: (name, val) => {
+		EGCode.params[name] = val
 	},
-	times: (times, callback)=>{
+	times: (times, callback) => {
 		for (var index = 0; index < times; index++) {
 			callback(index)
 		}
 	},
-	arr: function(text){
-		let numArr=true
-		text.split("_").forEach(e=>{
-			if(Number.isNaN(Number(e)))numArr=false
+	arr: function(text) {
+		let numArr = true
+		text.split("_").forEach(e => {
+			if (Number.isNaN(Number(e))) numArr = false
 		})
-		if(numArr){
+		if (numArr) {
 			return text.split("_")
-		}else{
+		} else {
 			return text.split(",,")
 		}
+	},
+	scriptTag: () => {
+		document.querySelectorAll("script[type='text/EGCode']".toLowerCase()/*because of the  code prediction thingy*/).forEach(s => new Function(EGCode.compileToJS(s.innerHTML))())
+	},
+	wait: (a, b) => {
+		setTimeout(b, a)
 	}
 }
 export default EGCode;

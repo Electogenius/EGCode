@@ -16,6 +16,9 @@
 </head>
 
 <body>
+	<script type="text/egcode" charset="utf-8">
+		log(hello world!)
+	</script>
 	<pre><code class="language-javascript" id="c"></code></pre>
 	<script type="module">
 		import EGCode from "/compiler.module.js"
@@ -24,11 +27,10 @@
 			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
-var n1([ask( number #1 )])
-var operator([ask( operator )])
-var n2([ask( number #2 )])
-log([eval( $n1 +  + $operator\\ +  + $n2 )])
+var i 0
++ i(2)
 `)
+//EGCode.scriptTag()
 try{eval(d)}catch(e){console.log(e)}
 			c.innerHTML = d.replace('\n')
 		}else{
