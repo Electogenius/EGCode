@@ -1,5 +1,5 @@
 var EGCode = {
-	version: 0.92,
+	version: 0.94,
 		//UVar -> js
 	UVarToJS: function(uvar) {
 			if (uvar == "") return "0"
@@ -262,6 +262,14 @@ var EGCode = {
 						output += rem() + ")"
 					}
 				}
+				//add
+				if (usemes.cmdName.startsWith("$") && /^ [\+\-\*\/]$/.test(commandArr[1])) {
+					if (kwdInd == 0) {
+						output += "EGCode.setVar('" + EGCode.varMatch(kwd) + "', "
+					} else if (kwdInd == 2) {
+						output += rem() + ",'"+commandArr[1]+"')"
+					}
+				}
 				//multiline variables and brackets
 				if (kwdInd == 0) {
 					if (usemes.cmdName == "no{") output += "/*"
@@ -336,12 +344,20 @@ var EGCode = {
 			if (!(name in EGCode.varsSoFar)) EGCode.varsSoFar[name] = value
 		}
 	},
-	setVar: (name, value) => {
-		if (!name.startsWith("_")) {
+	setVar: (name, value, operator) => {
+		if(operator===undefined){
+			if (!name.startsWith("_")) {
+				if (name in EGCode.varsSoFar) {
+					EGCode.varsSoFar[name] = value
+				} else if ((name.slice(0, name.lastIndexOf("."))) in EGCode.varsSoFar) {
+					EGCode.varsSoFar[name] = value
+				}
+			}
+		}else{
 			if (name in EGCode.varsSoFar) {
-				EGCode.varsSoFar[name] = value
+				eval(`EGCode.varsSoFar[name] ${operator}= value`)
 			} else if ((name.slice(0, name.lastIndexOf("."))) in EGCode.varsSoFar) {
-				EGCode.varsSoFar[name] = value
+				eval(`EGCode.varsSoFar[name] ${operator}= value`)
 			}
 		}
 	},

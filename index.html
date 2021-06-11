@@ -27,12 +27,13 @@
 			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
 			let d = EGCode.compileToJS(
 `
-var i 0
-+ i(2)
+var i 1
+$i / 2
+log([$i])
 `)
 //EGCode.scriptTag()
 try{eval(d)}catch(e){console.log(e)}
-			c.innerHTML = d.replace('\n')
+			c.innerHTML = d
 		}else{
 			window.location="https://electogenius.github.io/electo/likes/ruining/EGCode"
 		}
