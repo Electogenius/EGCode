@@ -108,6 +108,10 @@ var EGCode = {
 					if (currentChar == "(" && usemes.isInUVal !== true) {
 						usemes.isInUVal = true
 						kwArr.push("")
+					}else if(currentChar == "[" && usemes.isInUVal !== true && kwArr[kwArr.length-1] !=="]else"){
+						usemes.isInUVal = true
+						usemes.mathshort = true
+						kwArr.push("[")
 					} else if (currentChar == "`" && !usemes.isInUVal) {
 						usemes.isInUVal = true
 						usemes.isInMLUVar = true
@@ -125,10 +129,13 @@ var EGCode = {
 				}
 				
 			}
-			//console.log(kwArr)
 			if(!usemes.isInMLUVar)usemes.isInUVal = 0
-			if(!usemes.isInMLUVar){kwArr.push(';')
-			kwArr.push("")}else{kwArr[kwArr.length-1]+="\n"}
+			if(!usemes.isInMLUVar){
+				if(usemes.mathshort==true){usemes.mathshort=0;kwArr[kwArr.length-1]+=")"}
+				kwArr.push(';')
+				kwArr.push("")
+			}else{kwArr[kwArr.length-1]+="\n"}
+			//console.log(kwArr, usemes)
 		}
 		//parse -> better parse
 		var arrr = [[]] //list of arrays of keywords in commands
@@ -372,12 +379,14 @@ var EGCode = {
 			}
 		} else {
 			if (typeof param == "function") {
+				//try{
 				name.split("_").slice(1).forEach(lib => {
 					EGCode.import(lib).then((res) => {
 						EGCode.loadlib(new Function(res.contents).call())
 						param.call()
 					})
 				})
+				//}catch(e){console.log("");}
 			}
 		}
 		//if (typeof EGCode.funs[name] == "string") try { eval(EGCode.funs[name]) } catch (e) {}
@@ -395,9 +404,7 @@ var EGCode = {
 	library_link: "https://cdn.jsdelivr.net/gh/Electogenius/EGCode@main/eglib/",
 	cors: "https://api.allorigins.win/get?url=",
 	loadlib: o => {
-		for (var prop in o.funs) {
-			EGCode.funs[prop] = o.funs[prop]
-		}
+		//console.log(o)
 		for (var prop in o.funs) {
 			EGCode.funs[prop] = o.funs[prop]
 		}

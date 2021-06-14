@@ -2,7 +2,8 @@
 <html>
 
 <head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js" integrity="sha512-YBk7HhgDZvBxmtOfUdvX0z8IH2d10Hp3aEygaMNhtF8fSOvBZ16D/1bXZTJV6ndk/L/DlXxYStP8jrF77v2MIg==" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/highlight.min.js" integrity="sha512-W7EehcwtSbRF63FIQlXEOOd5mnq0Et0V0nUOvwcUvjnCKgOLLYbqriQxEQSp63sfrkryxIg/A/O8v8O18QwQCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/styles/vs2015.min.css" integrity="sha512-mtXspRdOWHCYp+f4c7CkWGYPPRAhq9X+xCvJMUBVAb6pqA4U8pxhT3RWT3LP3bKbiolYL2CkL1bSKZZO4eeTew==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-okaidia.min.css">
 	<style type="text/css" media="all">
 	body{
@@ -17,20 +18,20 @@
 
 <body>
 	<script type="text/egcode" charset="utf-8">
-		log(hello world!)
+		
 	</script>
 	<pre><code class="language-javascript" id="c"></code></pre>
+	<script>hljs.highlightAll();</script>
 	<script type="module">
 		import EGCode from "/compiler.module.js"
 		window.EGCode = EGCode
 		if(window.location.href.startsWith("http://localhost:")||window.location.href.startsWith('https://00f')){
-			EGCode.library_link = "https://electogenius.github.io/EGCode/eglib/"
+			//EGCode.library_link = "localhost:7700/eglib/"
 			let d = EGCode.compileToJS(
 `
-var i 1
-$i / 2
-log([$i])
+
 `)
+
 //EGCode.scriptTag()
 try{eval(d)}catch(e){console.log(e)}
 			c.innerHTML = d

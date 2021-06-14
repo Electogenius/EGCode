@@ -8,10 +8,10 @@ var fibonacci do n{
    set num1([$num2])
    set num2([$sum])
   }
-  give([$num2])
+  give[$num2]
 }
 
 logs the first 20 fibonacci numbers
 repeat(n_20){
-	log([fibonacci($n\) is \ fibonacci( $n )])
+	log[fibonacci($n\) is \ fibonacci( $n )]
 }

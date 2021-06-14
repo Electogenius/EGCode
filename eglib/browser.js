@@ -6,6 +6,9 @@ return {
 		ask: e=>prompt(e),
 		httpgettext: e=>{
 			fetch(e).then(r=>r.text().then(t=>{return(t)})).catch(e=>{throw(e)})
+		},
+		el: function n(){
+			
 		}
 	}
 }
