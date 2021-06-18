@@ -10,7 +10,7 @@
 		background-color: black
 	}
 	code{
-		font-family: menlo, monospace !important
+		font-family: ui-monospace, monospace !important
 	}
 	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/2.4.1/eruda.min.js" referrerpolicy="no-referrer" onload='eruda.init()'></script>
@@ -22,23 +22,28 @@
 	</script>
 	<pre><code class="language-javascript" id="c"></code></pre>
 	<script>hljs.highlightAll();</script>
+	<script src="lib-test.js" type="text/javascript" charset="utf-8"></script>
 	<script type="module">
 		import EGCode from "/compiler.module.js"
 		window.EGCode = EGCode
+		EGCode.loadlib(dom())
+		
 		if(window.location.href.startsWith("http://localhost:")||window.location.href.startsWith('https://00f')){
 			//EGCode.library_link = "localhost:7700/eglib/"
 			let d = EGCode.compileToJS(
-`
-
+`	loadTest()
+node e,,div
+# %e tagname(p)
 `)
-
-//EGCode.scriptTag()
-try{eval(d)}catch(e){console.log(e)}
+EGCode.loadlib(dom())
+EGCode.stdFuns.loadtest=(e)=>{EGCode.loadlib(dom());console.log(e)}
+try{eval(d);console.log(EGCode.nodes)}catch(e){console.log(e)}
 			c.innerHTML = d
 		}else{
 			window.location="https://electogenius.github.io/electo/likes/ruining/EGCode"
 		}
 	</script>
+	
 </body>
 
 </html>

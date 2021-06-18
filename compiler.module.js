@@ -1,5 +1,5 @@
 var EGCode = {
-	version: 0.94,
+	version: 0.96,
 		//UVar -> js
 	UVarToJS: function(uvar) {
 			if (uvar == "") return "0"
@@ -286,6 +286,7 @@ var EGCode = {
 					if (usemes.cmdName == "}") output += "})"
 					if (usemes.cmdName == "]") output += "}"
 				}
+				EGCode.every.forEach(e=>eval(e.toString())())
 				if (op == output && kwdInd == 1) {
 					if (typeof EGCode.funs[usemes.cmdName] == "string") {
 						new Function(EGCode.funs[usemes.cmdName]).call()
@@ -344,6 +345,7 @@ var EGCode = {
 		_pi: Math.PI,
 		_e: Math.E,
 	},
+	every:[],
 	registerVar: (name, value) => {
 		if (typeof value == "function") {
 			if (!(name in EGCode.funs)) EGCode.funs[name] = value;
@@ -404,10 +406,9 @@ var EGCode = {
 	library_link: "https://cdn.jsdelivr.net/gh/Electogenius/EGCode@main/eglib/",
 	cors: "https://api.allorigins.win/get?url=",
 	loadlib: o => {
-		//console.log(o)
-		for (var prop in o.funs) {
-			EGCode.funs[prop] = o.funs[prop]
-		}
+		for (let prop in o.funs){EGCode.funs[prop] = o.funs[prop]}
+		for (let ev of o.every){EGCode.every.push(ev)}
+		o.onload()
 	},
 	getVar: name => {
 		if (EGCode.varMatch(name) in EGCode.varsSoFar) {

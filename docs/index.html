@@ -1,58 +1,64 @@
 <!DOCTYPE html>
 <script>
 var d = `
+%
 # EGCode [[obj]]
 The javascript object used to compile EGCode
-
+%
 ## compileToJS [[fnc]]
 
 \`function(code: string): string\`
-
 returns javascript code compiled from the EGCode in the code param.
-
+ %
+%
 ## varMatch [[fnc]]
 
 \`function(text: string): string\`
 
 returns only the part of the input that has letters, numbers and underscores (and makes the name lowercase)
-
+ %
+%
 ## funs [[obj]]
 
 an object of all commands that can be used inside of math (like in \`log([lowercase( SOME TEXT )])\`)
-
+ %
+%
 ## funs [[obj]]
 
 an object of commands (like \`log\` and \`var\`, well log and var aren't in there)
-
+ %
+%
 ## varsSoFar [[obj]]
 
 an object of all variables declared in the previous EGCode compilation (and their values)
-
+ %
+%
 ## registerVar [[fnc]]
 
 \`function(name: string, value: number|string|math|function): void\`
 
 creates a variable with a name and a value
-
+ %
+%
 ## setVar [[fnc]]
 \`function(name: string, value: number|string|math|function): void\`
 
 sets a variable's value
-
+ %
+%
 ## resetVals [[fnc]]
 \`function(): void\`
 
 removes every variable from the [varsSoFar](#varssofar-obj) object
-`
+ %
+`+"\n %"
 </script>
 <html>
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+	<title>EGCode javascript documentation</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js" integrity="sha512-t1jq1b5U4hgz4lQoeyRD9QiVu99KxjyA939fnND+R+gLOHmuT5F9YFHJI1Nse1B1QG6/U11SPAc8fshYshb6MA==" crossorigin="anonymous"></script>
 	<style type="text/css" media="all">
 		*{
@@ -74,12 +80,17 @@ removes every variable from the [varsSoFar](#varssofar-obj) object
 			padding-bottom: 5px;
 			background-color: #111;
 			height: 40px;
+			backdrop-filter: blur(5px);
+			-webkit-backdrop-filter: blur(5px);
+			background-color: rgba(0,0,0,0.5);
+			border-radius: 5px;
+			font-family:ui-monospace, monospace;
 		}
 		h2::before{
 			content: "."
 		}
 		code{
-			font-family: "Roboto Mono", monospace;
+			font-family: ui-monospace, monospace;
 			background-color: #222;
 			color: #ddd;
 			padding: 3px;
@@ -100,14 +111,14 @@ removes every variable from the [varsSoFar](#varssofar-obj) object
 
 <body>
 	<nav>
-		EGCode v8.8.8 docs
+		EGCode v8.8.8 js docs
 	</nav>
 	<div id="dox">
 	</div>
 	<script type="text/javascript" charset="utf-8">
 		let documentation = d.replace(/\[\[/g, "<label>").replace(/\]\]/g, "</label>")
 		//console.log(documentation)
-		document.getElementById("dox").innerHTML = marked(documentation)
+		document.getElementById("dox").innerHTML = marked(documentation.replace(/ %/g,"</div>").replace(/%\n/g,"<div>\n\n"))
 	</script>
 </body>
 </html>

@@ -22,6 +22,10 @@
 			color: white;
 			font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif
 		}
+		
+		#cm{
+			border-radius: 5px !important;
+		}
 
 		#ov {
 			position: absolute;
@@ -66,12 +70,27 @@
 			border-bottom: 1px solid white;
 			color: white;
 		}
+		
+		#run{
+			position: absolute;
+			background-color: rgba(0, 0, 0, 0.5));
+			color: white;
+			padding: 10px;
+			font-size: 1.5rem;
+			margin-left: 50vw;
+			border-radius: 5px;
+			transform: translate(-50%, -50%);
+			backdrop-filter: blur(5px);
+			-webkit-backdrop-filter: blur(5px);
+			z-index: 5;
+		}
 	</style>
 </head>
 
 <body>
 	<pre id="ov"></pre>
 	<div id="cm"></div>
+	<span id="run">run</span>
 	<script type="text/javascript" charset="utf-8">
 		Rainbow.extend("egcode", [
 			{
