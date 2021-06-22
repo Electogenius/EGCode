@@ -72,7 +72,7 @@ var EGCode = {
 			}
 			//variable replacing
 			if(isMath){
-			x = x.replace(/\$[^\\`]+/g, function(a, b, c) { //`
+			x = x.replace(/\$[^\\` ]+/g, function(a, b, c) { //`
 				if (typeof EGCode.varsSoFar[a] !== "number") {
 					return "${EGCode.getVar('" + EGCode.varMatch(a.split(/\\/)[0]) + "')}"
 				} else {
@@ -348,9 +348,9 @@ var EGCode = {
 	every:[],
 	registerVar: (name, value) => {
 		if (typeof value == "function") {
-			if (!(name in EGCode.funs)) EGCode.funs[name] = value;
+			EGCode.funs[name] = value;
 		} else {
-			if (!(name in EGCode.varsSoFar)) EGCode.varsSoFar[name] = value
+			EGCode.varsSoFar[name] = value
 		}
 	},
 	setVar: (name, value, operator) => {
@@ -444,6 +444,10 @@ var EGCode = {
 	},
 	wait: (a, b) => {
 		setTimeout(b, a)
+	},
+	//TODO: add EGCode.if
+	if:(...s)=>{
+		
 	}
 }
 export default EGCode;

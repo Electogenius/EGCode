@@ -9,24 +9,24 @@
 		import EGCode from "./compiler.module.js"
     	window.EGCode = EGCode
   </script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js" integrity="sha512-ZTpbCvmiv7Zt4rK0ltotRJVRaSBKFQHQTrwfs6DoYlBYzO1MA6Oz2WguC+LkV8pGiHraYLEpo7Paa+hoVbCfKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.css" integrity="sha512-xIf9AdJauwKIVtrVRZ0i4nHP61Ogx9fSRAkCLecmE2dL/U8ioWpDvFCAy4dcfecN72HHB9+7FfQj3aiO68aaaw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/theme/nord.min.css" integrity="sha512-sPc4jmw78pt6HyMiyrEt3QgURcNRk091l3dZ9M309x4wM2QwnCI7bUtsLnnWXqwBMECE5YZTqV6qCDwmC2FMVA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/addon/edit/closebrackets.min.js" integrity="sha512-cCnOU69ESswPmMV3f9TR7WgctoJZliqGbJ8WeLn0VlUrngSsmtVopRf6OG/epbURGfNmY4RY6RzZ/mWkPQ/onw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/addon/hint/show-hint.min.js" integrity="sha512-vmnoZMgVSaDE+VzynH2agDhizzixaoa27PqRWpqYXn4XOG/qxB/AFZOaRT/GIUbmVE1Fc/T1HGNiy/whbPz8uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/addon/hint/show-hint.min.css" integrity="sha512-OmcLQEy8iGiD7PSm85s06dnR7G7C9C0VqahIPAj/KHk5RpOCmnC6R2ob1oK4/uwYhWa9BF1GC6tzxsC8TIx7Jg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js" integrity="sha512-1iwOtzgGTn5KiNhyTHdGh8IpixXZnsD0vRXUqNUgWqET4Uv3vDXuHq55cGjdJ+qNBL/HxH815N7qvLxgzA1dYw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/theme/nord.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/addon/edit/closebrackets.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/addon/hint/show-hint.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/addon/hint/show-hint.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<style type="text/css" media="all">
 		body {
 			background-color: black;
 			color: white;
-			font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif
-		}
-		
-		#cm{
-			border-radius: 5px !important;
+			font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+			margin: 10px;
 		}
 
+		#cm *, pre#o{
+			border-radius: 5px !important;
+		}
 		#ov {
 			position: absolute;
 			z-index: 1;
@@ -61,28 +61,45 @@
 		.bracket {
 			color: gray;
 		}
-		.CodeMirror-hints{
+
+		.CodeMirror-hints {
 			background-color: black;
 			border: 1px solid white;
 			color: white;
 		}
-		.CodeMirror-hint{
+
+		.CodeMirror-hint {
 			border-bottom: 1px solid white;
 			color: white;
 		}
-		
-		#run{
+
+		.run {
 			position: absolute;
-			background-color: rgba(0, 0, 0, 0.5));
+			background-color: rgba(0, 0, 0, 0.1);
 			color: white;
 			padding: 10px;
 			font-size: 1.5rem;
-			margin-left: 50vw;
 			border-radius: 5px;
-			transform: translate(-50%, -50%);
 			backdrop-filter: blur(5px);
 			-webkit-backdrop-filter: blur(5px);
 			z-index: 5;
+			transform: translateY(-50%)
+		}
+		
+		pre#o{
+			margin:0;
+			padding: 5px;
+			background-color: #222;
+			font-size: 1rem;
+			height: 40vh;
+			margin-top: 20px;
+			overflow: auto
+		}
+		code{
+			font-family: ui-monospace,monospace;
+		}
+		p{
+			margin:0;padding:0;
 		}
 	</style>
 </head>
@@ -90,16 +107,24 @@
 <body>
 	<pre id="ov"></pre>
 	<div id="cm"></div>
-	<span id="run">run</span>
+	<span id='btns'><span class="run" onclick="
+	document.getElementById('output').innerHTML=''
+	new Function(EGCode.compileToJS(cm.getValue()))()
+	">run</span>
+		<span class="run" style="right: 10px" onclick="
+		document.getElementById('output').innerText=EGCode.compileToJS(cm.getValue())
+		">generated js</span></span>
+		<pre id="o"><code id="output">
+		</code></pre>
 	<script type="text/javascript" charset="utf-8">
 		Rainbow.extend("egcode", [
 			{
 				name: "function",
-				pattern: /^[\t ]*((?=\])|)[^\(\n ]+((?=\(.*\))|(?= ))/gm
+				pattern: /^[\t ]*((?=\])|)[^\(\n\[ ]+((?=[\[\(].*[\]\)])|(?= ))/gm
 	},
 			{
 				name: "math",
-				pattern: /\(\[.*\]\)(?=$|\{|\[$)/gm
+				pattern: /(\(\[.*\]\)(?=$|\{|\[$)|\[.*\]?\](?=$|\{|\[$))/gm
 	},
 			{
 				name: "basic-number",
@@ -107,7 +132,7 @@
 	},
 			{
 				name: "basic-string",
-				pattern: /(\([^\[]?.*[^\]]?\)(?=$|\{|\[$))/gm
+				pattern: /(\([^\[]?.*[^\]]?\)(?=$|\{$|\[$))/gm
 	},
 			{
 				name: "bracket",
@@ -116,7 +141,7 @@
 	])
 		try {
 			var cm = new CodeMirror(document.getElementById("cm"), {
-				value: "if([hello])[\n	log(2)\n]",
+				value: (null === localStorage.getItem("egc_editor")) ? "if[1 + 1 = 2]{\nlog(hellooo)\n}":localStorage.egc_editor,
 				theme: "nord",
 				lineNumbers: true,
 				autoCloseBrackets: true,
@@ -125,24 +150,24 @@
 			})
 		} catch (e) { console.log(e) }
 		let sn = {}
-		let w = ["log", "var ", "if", "repeat", "else", "elseif", "ifnt", "elseifnt","_log","sin","cos","ask","with_ {","sqrt","lengthof","rand","run","eval","max","min","not","give"].sort()
+		let w = ["log", "var ", "if", "repeat", "else", "elseif", "ifnt", "elseifnt", "_log", "sin", "cos", "ask", "with_ {", "sqrt", "lengthof", "rand", "run", "eval", "max", "min", "not", "give"].sort()
 		try {
-			
+
 			sn = CodeMirror.hint.fromList(cm, {
 				words: w
 			})
 		} catch (e) { console.log(e) }
 		console.log(sn)
-		cm.on("change", function(c,change) {
+		cm.on("change", function(c, change) {
 			highlight()
 			let invalid = false;
-			["{","}","(",")","[","]"].forEach(item=>{
-				if(cm.getLine(cm.getCursor().line).trim().slice(0, cm.getCursor().ch).endsWith(item))invalid=true
+			["{", "}", "(", ")", "[", "]"].forEach(item => {
+				if (cm.getLine(cm.getCursor().line).trim().slice(0, cm.getCursor().ch).endsWith(item)) invalid = true
 			})
-			if(!invalid && change.origin!="+delete"){
-			try {
-				CodeMirror.showHint(cm, (a, b) => {
-					/*let e = {}
+			if (!invalid && change.origin != "+delete") {
+				try {
+					CodeMirror.showHint(cm, (a, b) => {
+						/*let e = {}
 					e.to = (cm.getCursor())
 					e.from = e.to
 					e.from.ch-=cm.getLine(cm.getCursor().line).trim().slice(0,cm.getCursor().ch).length
@@ -160,12 +185,12 @@
 						list:w
 					}
 					sn.list=w
-					return dd*/
-					///*
+					return dd* /
+					/ //*
 					const cursor = cm.getCursor()
       const token = cm.getTokenAt(cursor)
       //console.log(token)
-      const start = /*token.start*/token.string.match(/$ +/g)[0].length
+      const start = /*token.start* /token.string.match(/$ +/g)[0].length
       const end = cursor.ch
       const line = cursor.line
       const currentWord = token.string
@@ -179,11 +204,12 @@
         from: CodeMirror.Pos(line, start),
         to: CodeMirror.Pos(line, end)
       }
-					//*/
-				}, { completeSingle: false })
-				//console.log(document.getElementById("cm"))
-			} catch (e) { console.log(e) }
-		//	console.log(document.body.innerHTML.replace(/>/g,">\n"))
+					//* /
+				}, { completeSingle: false })*/
+						//console.log(document.getElementById("cm"))
+					})
+				} catch (e) { console.log(e) }
+				//	console.log(document.body.innerHTML.replace(/>/g,">\n"))
 			}
 		})
 
@@ -194,6 +220,22 @@
 			})
 		}
 		highlight()
+		console.log = function(text) {
+			var node = document.createElement('p')
+			node.innerText = text
+			document.getElementById("output").appendChild(node)
+		}
+
+		function aa(a, b, c, d) {
+			var node = document.createElement('p')
+			node.style.backgroundColor = "red"
+			node.style.wordWrap = "wrap"
+			var texN = document.createTextNode(a)
+			node.appendChild(texN)
+			document.getElementById("output").appendChild(node)
+		}
+		window.onerror=aa
+		cm.on("change",()=>{localStorage.egc_editor = cm.getValue()})
 	</script>
 </body>
 
