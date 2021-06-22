@@ -141,7 +141,7 @@
 	])
 		try {
 			var cm = new CodeMirror(document.getElementById("cm"), {
-				value: (null === localStorage.getItem("egc_editor")) ? "if[1 + 1 = 2]{\nlog(hellooo)\n}":localStorage.egc_editor,
+				value: (null === localStorage.getItem("egc_editor")) ? "repeat[1 + 1]{\nlog(hellooo)\n}":localStorage.egc_editor,
 				theme: "nord",
 				lineNumbers: true,
 				autoCloseBrackets: true,
