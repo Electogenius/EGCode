@@ -9,10 +9,10 @@ Because who needs "" and '', am I right
 **version: 0.9.6**
 
 ```EGCode
-print(hello world)
+log(hello world)
 
 var x(10)
-print([$x + 15])
+log([$x + 15])
 ^logs 25
 this is a comment, yep
 ```
