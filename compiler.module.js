@@ -321,24 +321,25 @@ var EGCode = {
 	},
 	funs: {},
 	stdFuns: {
-		uppercase: (x) => x.toUpperCase(),
-		lowercase: (x) => x.toLowerCase(),
+		uppercase: (x) => x.toUpperCase(),//makes text uppercase
+		lowercase: (x) => x.toLowerCase(),//makes text lowercase
 		stringize: (x) => String(x).split("").join("\\"), //not sure
-		lengthof: (x) => String(x).length,
-		sqrt: (x) => Math.sqrt(x),
-		ask: (x) => prompt(x),
-		n: (x) => x.split("").join("\\"),
-		_log: (x) => Math.log(x),
-		rand: (x) => Math.round(Math.random() * x),
-		run: (x) => new Function(EGCode.compileToJS(String(x))).call(),
-		eval: (x) => new Function('return ' + EGCode.UVarToJS(x)).call(),
-		sin: (x) => Math.sin(x),
-		cos: (x) => Math.cos(x),
-		max: (x) => Math.max(EGCode.arr(x)[0], EGCode.arr(x)[1]),
-		min: (x) => Math.min(EGCode.arr(x)[0], EGCode.arr(x)[1]),
-		not: (x) => (x) ? 0 : 1,
-		b64e: (x) => btoa(x),
-		b64d: (x) => atob(x),
+		lengthof: (x) => String(x).length,//gives the length of the input
+		sqrt: (x) => Math.sqrt(x),//gives the square root of the input
+		ask: (x) => prompt(x),//asks the user for input and returns the value
+		n: (x) => x.split("").join("\\"),//not sure
+		_log: (x) => Math.log(x),//logarithms
+		rand: (x) => Math.round(Math.random() * x),//gives a random whole number between 0 and the input
+		run: (x) => new Function(EGCode.compileToJS(String(x)).slice(20)).call(),//runs the input as EGCode
+		eval: (x) => new Function('return ' + EGCode.UVarToJS(x)).call(),//gives the value of the input as a uvar
+		sin: (x) => Math.sin(x),//sine
+		cos: (x) => Math.cos(x),//cosine
+		max: (x) => Math.max(EGCode.arr(x)[0], EGCode.arr(x)[1]),//returns the larger number of the two inputs
+		min: (x) => Math.min(EGCode.arr(x)[0], EGCode.arr(x)[1]),//returns the smaller number of the two inputs
+		not: (x) => (x) ? 0 : 1,//returns 0 if the input has a value, else gives 1
+		b64e: (x) => btoa(x),//base64 encode
+		b64d: (x) => atob(x),//base64 decode
+		replace: (x) => x.slice(x.n).replace(EGCode.regex(EGCode.arr(x)[1])),//(regex,,text)
 	},
 	varsSoFar: {},
 	stdVars: {
@@ -448,6 +449,9 @@ var EGCode = {
 	//TODO: add EGCode.if
 	if:(...s)=>{
 		
+	},
+	regex: (x)=>{
+		return new Regex(x.slice(x.indexOf("/")))
 	}
 }
 export default EGCode;
