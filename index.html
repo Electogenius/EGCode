@@ -31,13 +31,18 @@
 		if(window.location.href.startsWith("http://localhost:")||window.location.href.startsWith('https://00f')){
 			//EGCode.library_link = "localhost:7700/eglib/"
 			let d = EGCode.compileToJS(
-`	loadTest()
-node e,,div
-# %e tagname(p)
+`
+if(1){
+	log(h)
+}elseif(){
+	log(e)
+}else{
+	log(y)
+}
 `)
 EGCode.loadlib(dom())
 EGCode.stdFuns.loadtest=(e)=>{EGCode.loadlib(dom());console.log(e)}
-try{eval(d);console.log(EGCode.nodes)}catch(e){console.log(e)}
+try{eval(d);}catch(e){console.log(e)}
 			c.innerHTML = d
 		}else{
 			window.location="https://electogenius.github.io/electo/likes/ruining/EGCode"

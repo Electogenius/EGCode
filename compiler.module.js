@@ -88,6 +88,7 @@ var EGCode = {
 		if (typeof(code) !== "string") {
 			throw ("JavaScript input must be of type string. Invalid code ", code)
 		}
+		EGCode.code=code
 		function iSE(a, b) { //case insensitive ===
 			return a.toLowerCase() === b.toLowerCase()
 		}
@@ -202,17 +203,17 @@ var EGCode = {
 				//if
 				if (EGCode.varMatch(usemes.cmdName) == "if") {
 					if (kwdInd == 0) {
-						output += "if("
+						output += "EGCode.if("
 					} else {
-						output += EGCode.UVarToJS(kwd.slice(0, -2)) + "){"
+						output += EGCode.UVarToJS(kwd.slice(0, -2)) + ",()=>{"
 					}
 				}
 				//"ifn't"
 				if (EGCode.varMatch(usemes.cmdName) == "ifnt") {
 					if (kwdInd == 0) {
-						output += "if(!("
+						output += "EGCode.if(!("
 					} else {
-						output += EGCode.UVarToJS(kwd.slice(0, -2)) + ")){"
+						output += EGCode.UVarToJS(kwd.slice(0, -2)) + "),()=>{"
 					}
 				}
 				//repeat
@@ -242,23 +243,23 @@ var EGCode = {
 					}
 				}
 				//else
-				if (iSE(usemes.cmdName, "]else[")) {
-					output += "}else{"
+				if (iSE(usemes.cmdName, "}else{")) {
+					output += "},()=>{"
 				}
 				//else if
-				if (iSE(usemes.cmdName, "]elseif")) {
+				if (iSE(usemes.cmdName, "}elseif")) {
 					if (kwdInd == 0) {
-						output += "}else if("
+						output += "},"
 					} else {
-						output += EGCode.UVarToJS(kwd.slice(0, -2)) + "){"
+						output += EGCode.UVarToJS(kwd.slice(0, -2)) + ",()=>{"
 					}
 				}
 				//else ifn't
-				if (iSE(usemes.cmdName, "]elseifnt")) {
+				if (iSE(usemes.cmdName, "}elseifnt")) {
 					if (kwdInd == 0) {
-						output += "}else if(!("
+						output += "},!("
 					} else {
-						output += EGCode.UVarToJS(kwd.slice(0, -2)) + ")){"
+						output += EGCode.UVarToJS(kwd.slice(0, -2)) + "),()=>{"
 					}
 				}
 				//a better "set variable"
@@ -340,6 +341,13 @@ var EGCode = {
 		b64e: (x) => btoa(x),//base64 encode
 		b64d: (x) => atob(x),//base64 decode
 		replace: (x) => x.slice(x.n).replace(EGCode.regex(EGCode.arr(x)[1])),//(regex,,text)
+		lang: (x)=>{//language properties
+			if(x=="web")return Number(EGCode.web)
+			if(x=="code")return EGCode.code //possibly too overpowered
+			
+			return -1
+		},
+		arr_nth:(x)=>EGCode.arr(x.slice(x.indexOf(",,")+2))[EGCode.arr(x)[0]]
 	},
 	varsSoFar: {},
 	stdVars: {
@@ -435,23 +443,38 @@ var EGCode = {
 			if (Number.isNaN(Number(e))) numArr = false
 		})
 		if (numArr) {
-			return text.split("_")
+			return text.split("_").map(e=>Number(e))
 		} else {
 			return text.split(",,")
 		}
 	},
 	scriptTag: () => {
-		document.querySelectorAll("script[type='text/EGCode']".toLowerCase()/*because of the  code prediction thingy*/).forEach(s => new Function(EGCode.compileToJS(s.innerHTML))())
+		document.querySelectorAll("script[type='text/x.EGCode']".toLowerCase()/*lowercase because the code prediction thingy, also "x." because unregistered*/).forEach(s => new Function(EGCode.compileToJS(s.innerHTML))())
 	},
 	wait: (a, b) => {
 		setTimeout(b, a)
 	},
-	//TODO: add EGCode.if
-	if:(...s)=>{
-		
+	if:function(...a){//seems to work fine but I'm still skeptic
+		let ind=0
+		function e(){
+			if(typeof a[ind]=="function"){
+				a[ind]()
+			}else{
+				if(a[ind]){a[ind+1].call()}else{
+					ind+=2;e.call()
+				}
+			}
+		}
+		e()
 	},
 	regex: (x)=>{
 		return new Regex(x.slice(x.indexOf("/")))
-	}
+	},
+	code: "",//previous code
+	web:false
+}
+//detect web
+{
+	if(typeof window!=="undefined"){EGCode.web=true;}
 }
 export default EGCode;
