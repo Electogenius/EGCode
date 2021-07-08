@@ -32,12 +32,8 @@
 			//EGCode.library_link = "localhost:7700/eglib/"
 			let d = EGCode.compileToJS(
 `
-if(1){
-	log(h)
-}elseif(){
-	log(e)
-}else{
-	log(y)
+with_p5 {
+	hi
 }
 `)
 EGCode.loadlib(dom())

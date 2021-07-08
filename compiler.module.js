@@ -382,6 +382,7 @@ var EGCode = {
 	resetVals: e => {
 		EGCode.varsSoFar = EGCode.stdVars
 		EGCode.funs = EGCode.stdFuns
+		EGCode.params={}
 	},
 	callFunction: (name, param) => {
 		if (!name.startsWith("with_")) {
@@ -394,8 +395,8 @@ var EGCode = {
 				name.split("_").slice(1).forEach(lib => {
 					EGCode.import(lib).then((res) => {
 						EGCode.loadlib(new Function(res.contents).call())
-						param.call()
 					})
+					param.call()
 				})
 				//}catch(e){console.log("");}
 			}
@@ -409,11 +410,15 @@ var EGCode = {
 			return fname + "( " + test + " )"
 		}
 	},
-	import: (lib) => {
-		return fetch(EGCode.cors + EGCode.library_link + lib + ".js").then(e => { if (e.ok) { return e.json() } else { throw ("error fetching file") } })
+	import: (lib) => {//WIP
+		return new Promise((res,rej)=>{
+			if(EGCode.web){
+				//fetch link
+			}else{
+				//get from local system, if not found then try to download
+			}
+		})
 	},
-	library_link: "https://cdn.jsdelivr.net/gh/Electogenius/EGCode@main/eglib/",
-	cors: "https://api.allorigins.win/get?url=",
 	loadlib: o => {
 		for (let prop in o.funs){EGCode.funs[prop] = o.funs[prop]}
 		for (let ev of o.every){EGCode.every.push(ev)}
