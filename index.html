@@ -12,30 +12,36 @@
 	code{
 		font-family: ui-monospace, monospace !important
 	}
+	canvas{
+		background-color: white
+	}
 	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/2.4.1/eruda.min.js" referrerpolicy="no-referrer" onload='eruda.init()'></script>
 </head>
 
 <body>
-	<script type="text/egcode" charset="utf-8">
-		
-	</script>
 	<pre><code class="language-javascript" id="c"></code></pre>
 	<script>hljs.highlightAll();</script>
 	<script src="lib-test.js" type="text/javascript" charset="utf-8"></script>
+	<canvas id="canvas">
+		
+	</canvas>
 	<script type="module">
 		import EGCode from "/compiler.module.js"
 		window.EGCode = EGCode
-		EGCode.loadlib(dom())
-		
 		if(window.location.href.startsWith("http://localhost:")||window.location.href.startsWith('https://00f')){
 			//EGCode.library_link = "localhost:7700/eglib/"
 			let d = EGCode.compileToJS(
 `
-lorem ipsum dolor[sit + amet]
+loadtest()
+c.set font(30px system-ui)
+c.set fillStyle(green)
+var $text 10
+c.do fillText [$text] 0 100
+
 `)
-EGCode.loadlib(dom())
-EGCode.stdFuns.loadtest=(e)=>{EGCode.loadlib(dom());console.log(e)}
+//EGCode.loadlib(hmm())
+EGCode.stdFuns.loadtest=()=>{EGCode.loadlib(hmm())}
 try{eval(d);}catch(e){console.log(e)}
 			c.innerHTML = d
 		}else{

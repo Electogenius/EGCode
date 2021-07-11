@@ -93,7 +93,7 @@ var EGCode = {
 			return a.toLowerCase() === b.toLowerCase()
 		}
 		//setup thingies
-		var output = "EGCode.resetVals();\n";
+		var output = EGCode.setup;
 		var usemes = { isInFunction: false };
 		code = code.replace(/\t/g, "")
 		//splitting into commands
@@ -109,7 +109,7 @@ var EGCode = {
 					if (currentChar == "(" && usemes.isInUVal !== true) {
 						usemes.isInUVal = true
 						kwArr.push("")
-					}else if(currentChar == "[" && usemes.isInUVal !== true && kwArr[kwArr.length-1] !=="]else"){
+					}else if(currentChar == "[" && usemes.isInUVal !== true && kwArr[kwArr.length-1] !=="]else" && comCharArr[charInd-1]!==" "){
 						usemes.isInUVal = true
 						usemes.mathshort = true
 						kwArr.push("[")
@@ -329,6 +329,7 @@ var EGCode = {
 		return x.join("").replace(/\[|\]/g, "")
 	},
 	funs: {},
+	setup: "EGCode.resetVals();\n",
 	stdFuns: {
 		uppercase: (x) => x.toUpperCase(),//makes text uppercase
 		lowercase: (x) => x.toLowerCase(),//makes text lowercase
@@ -392,13 +393,13 @@ var EGCode = {
 		EGCode.funs = EGCode.stdFuns
 		EGCode.params={}
 	},
-	callFunction: (name, param) => {
+	callFunction: (name, ...param) => {
 		if (!name.startsWith("with_")) {
 			if (typeof EGCode.funs[name] == "function") {
-				EGCode.funs[name](param)
+				EGCode.funs[name](...param)
 			}
 		} else {
-			if (typeof param == "function") {
+			if (typeof param[0] == "function") {
 				//try{
 				name.split("_").slice(1).forEach(lib => {
 					EGCode.import(lib).then((res) => {

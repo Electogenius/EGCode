@@ -1,4 +1,7 @@
-function dom() {
+function hmm() {
+	
+}
+/*function dom() {
 	return {
 		name: "dom",
 		funs: {
@@ -39,4 +42,4 @@ function dom() {
 			}
 		}
 	}
-}
+}*/
