@@ -151,11 +151,11 @@ var EGCode = {
 			}
 		}
 		//better parse -> js:
-		for (var ci = 0; ci < arrr.length; ci++) {
+		for (var ci = 0; ci < arrr.length; ci++) {//for command in command array
 			var commandArr = arrr[ci]
 			usemes.cmdName = commandArr[0]
 			var op = output
-			for (var kwdInd in commandArr) {
+			for (var kwdInd in commandArr) {//for keyword in command
 				var kwd = commandArr[kwdInd]
 				function rem() {
 					if (kwd.endsWith(")")) return EGCode.UVarToJS(kwd.slice(0, -1));
@@ -288,16 +288,24 @@ var EGCode = {
 					if (usemes.cmdName == "]") output += "}"
 				}
 				EGCode.every.forEach(e=>eval(e.toString())())
-				if (op == output && kwdInd == 1) {
+				if (op == output || usemes.inCustomFunc) {
 					if (typeof EGCode.funs[usemes.cmdName] == "string") {
 						new Function(EGCode.funs[usemes.cmdName]).call()
 					} else {
-						if (!commandArr[commandArr.length - 1].endsWith("{")) { output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName, "p") + "', " + rem() + ")\n" } else {
+						if (!commandArr[commandArr.length - 1].endsWith("{")) { 
+							if(kwdInd==0){
+								output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName, "p") + "')"
+								usemes.inCustomFunc=true
+							}else{
+								output=output.slice(0,-1)+","+rem()+")"
+							}
+						}else{
 							output += "EGCode.callFunction('" + EGCode.varMatch(usemes.cmdName, "p") + "', function(e_" + EGCode.varMatch(kwd.slice(0, -1)) + "){"
 						}
 					}
 				}
 			}
+			usemes.inCustomFunc=false
 			output += "\n"
 		}
 		//output js:

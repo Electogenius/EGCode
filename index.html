@@ -32,9 +32,7 @@
 			//EGCode.library_link = "localhost:7700/eglib/"
 			let d = EGCode.compileToJS(
 `
-with_p5 {
-	hi
-}
+lorem ipsum dolor[sit + amet]
 `)
 EGCode.loadlib(dom())
 EGCode.stdFuns.loadtest=(e)=>{EGCode.loadlib(dom());console.log(e)}
