@@ -429,7 +429,7 @@ var EGCode = {
 		})
 	},
 	loadlib: o => {
-		for (let prop in o.funs){EGCode.funs[prop] = o.funs[prop]}
+		for (let prop in o.funs){EGCode.stdFuns[prop] = o.funs[prop]}
 		for (let ev of o.every){EGCode.every.push(ev)}
 		o.onload()
 	},
