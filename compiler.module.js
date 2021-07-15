@@ -405,7 +405,7 @@ var EGCode = {
 					EGCode.import(lib).then((res) => {
 						EGCode.loadlib(new Function(res.contents).call())
 					})
-					param.call()
+					param[0].call()
 				})
 				//}catch(e){console.log("");}
 			}
