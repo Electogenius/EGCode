@@ -16,3 +16,5 @@ log([$x + 15])
 ^logs 25
 this is a comment, yep
 ```
+
+**Note**: EGCode is currently getting a fresh start with better grammar and stuff so this version is pretty much useless
